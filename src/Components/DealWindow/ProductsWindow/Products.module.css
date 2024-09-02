@@ -14,3 +14,27 @@
     padding: 0; /* Убираем отступы списка */
 }
 
+.addProductButton {
+    display: flex; /* Инлайн-блок для кнопки */
+    padding: 10px 20px; /* Отступы для кнопки */
+    background-color: #e3e3e3; /* Серо-синий цвет фона кнопки */
+    border: none; /* Убираем границу */
+    border-radius: 5px; /* Скругленные углы */
+    cursor: pointer; /* Курсор указатель при наведении */
+    font-size: 13px; /* Размер шрифта */
+    font-weight: bold; /* Жирный шрифт */
+    transition: background-color 0.3s, transform 0.3s; /* Плавный переход для фона и эффекта увеличения */
+    text-align: center; /* Центрируем текст */
+    margin-top: 10px; /* Отступ сверху */
+    margin-bottom: 10px;
+
+}
+
+.addProductButton:hover {
+    background-color: #bce0ed; /* Темнее цвет фона при наведении */
+}
+
+.addProductButton:active {
+    transform: scale(0.95); /* Уменьшение при нажатии */
+}
+

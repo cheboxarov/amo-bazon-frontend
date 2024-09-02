@@ -1,0 +1,75 @@
+.productItem {
+    display: flex; /* Flexbox for product item */
+    justify-content: space-between; /* Space between items */
+    align-items: center; /* Center vertically */
+    padding: 10px; /* Padding */
+    border-bottom: 1px solid #ddd; /* Divider line */
+    cursor: pointer; /* Pointer cursor */
+    transition: background-color 0.3s; /* Transition effect */
+}
+
+.productItem:hover {
+    background-color: #f7f7f7; /* Light gray background on hover */
+}
+
+.productName {
+    font-size: 14px; /* Reduced font size for product name */
+    font-weight: bold; /* Bold font */
+    color: #333; /* Text color */
+    flex-grow: 1; /* Allow the product name to take available space */
+}
+
+.productInfoLine {
+    font-size: 12px; /* Reduced font size for product info */
+    color: #666; /* Text color */
+    margin-top: 2px; /* Top margin */
+}
+
+.quantityControls {
+    display: flex; /* Flexbox for quantity controls */
+    align-items: center; /* Center vertically */
+}
+
+.quantityButton {
+    display: flex; /* Flexbox for button */
+    justify-content: center;
+    align-items: center;
+    width: 24px; /* Reduced button width */
+    height: 24px; /* Reduced button height */
+    background-color: #ccc; /* Gray background color */
+    color: white; /* Button text color */
+    cursor: pointer; /* Pointer cursor */
+    border-radius: 5px; /* Rounded corners */
+    margin: 0 5px; /* Margin between buttons */
+    transition: background-color 0.3s; /* Transition for hover */
+}
+
+.quantityButton:hover {
+    background-color: #bbb; /* Darker gray on hover */
+}
+
+.quantityDisplay {
+    font-size: 14px; /* Font size for quantity display */
+    margin: 0 5px; /* Margin around display */
+}
+
+.detailsButton {
+    padding: 5px; /* Reduced padding for the details div */
+    background-color: transparent; /* No background */
+    color: #007bff; /* Text color */
+    cursor: pointer; /* Pointer cursor */
+    border: none; /* No border */
+    margin-left: 10px; /* Margin for spacing */
+    display: inline-block; /* Make it behave like a block */
+    transition: color 0.3s; /* Transition for hover effect */
+}
+
+.detailsButton:hover {
+    color: #0056b3; /* Darker color on hover */
+}
+
+.icon {
+    width: 16px; /* Icon width */
+    height: 16px; /* Icon height */
+    vertical-align: middle; /* Align icon vertically */
+}

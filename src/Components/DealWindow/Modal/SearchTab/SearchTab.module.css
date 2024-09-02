@@ -1,0 +1,43 @@
+.searchContainer {
+    display: flex; /* Используем флексбокс для расположения элементов в строку */
+    align-items: center; /* Центрируем элементы по вертикали */
+    background-color: #f9f9f9; /* Цвет фона контейнера */
+    border-radius: 8px; /* Скругленные углы */
+    padding: 10px; /* Отступы внутри контейнера */
+    margin: 10px 0; /* Отступ сверху и снизу */
+}
+
+.searchInput {
+    flex: 1; /* Занимает всю доступную ширину */
+    padding: 10px; /* Отступы внутри поля ввода */
+    border: 1px solid #cfd8dc; /* Светлая граница */
+    border-radius: 4px; /* Скругленные углы для поля ввода */
+    font-size: 16px; /* Размер шрифта */
+    color: #333; /* Цвет текста */
+    transition: border-color 0.3s; /* Плавный переход для изменения цвета границы */
+}
+
+.searchInput:focus {
+    outline: none; /* Убираем стандартный контур */
+    border-color: #7eccec; /* Цвет границы при фокусе */
+}
+
+.searchButton {
+    padding: 10px 20px; /* Отступы внутри кнопки */
+    background-color: #7eccec; /* Светло-синий цвет фона кнопки */
+    color: white; /* Цвет текста кнопки */
+    border: none; /* Убираем границу */
+    border-radius: 4px; /* Скругленные углы */
+    cursor: pointer; /* Курсор указатель при наведении */
+    font-size: 16px; /* Размер шрифта */
+    margin-left: 10px; /* Отступ слева для кнопки */
+    transition: background-color 0.3s, transform 0.3s; /* Плавный переход для фона и эффекта увеличения */
+}
+
+.searchButton:hover {
+    background-color: #5da5b2; /* Темнее цвет фона при наведении */
+}
+
+.searchButton:active {
+    transform: scale(0.95); /* Уменьшение при нажатии */
+}

@@ -1,0 +1,84 @@
+/* ProductDetails.module.css */
+
+.detailsModal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999999;
+}
+
+.detailsContent {
+    background-color: #f9f9f9; /* Мягкий цвет фона */
+    padding: 20px;
+    border-radius: 8px; /* Закругленные углы */
+    max-width: 400px; /* Максимальная ширина */
+    width: 90%; /* Адаптивная ширина */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Легкая тень */
+    position: relative;
+    z-index: 99998;
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #333; /* Мягкий цвет кнопки закрытия */
+}
+
+.productImage {
+    width: 100%; /* Адаптивное изображение */
+    height: auto;
+    border-radius: 8px; /* Закругленные углы */
+    margin-bottom: 15px; /* Отступ снизу */
+}
+
+h2 {
+    font-size: 20px; /* Элегантный размер шрифта */
+    font-weight: bold;
+    color: #333; /* Цвет текста */
+    margin-bottom: 10px;
+}
+
+p {
+    font-size: 14px; /* Размер шрифта для деталей */
+    color: #666; /* Цвет текста для деталей */
+    margin: 5px 0;
+}
+
+.imageContainer {
+    position: relative;
+    text-align: center;
+}
+
+.navButton {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 999999;
+    border-radius: 4px; /* Легкое закругление кнопок */
+    user-select: none; /* Prevent text selection */
+}
+
+.navButton:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.navButton:first-of-type {
+    left: 10px; /* Adjusted for better alignment */
+}
+
+.navButton:last-of-type {
+    right: 10px; /* Adjusted for better alignment */
+}

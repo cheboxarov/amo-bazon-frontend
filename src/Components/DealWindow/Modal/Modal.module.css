@@ -1,0 +1,141 @@
+.modal {
+    position: fixed; /* Окно фиксировано относительно окна браузера */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.8); /* Полупрозрачный черный фон */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999999; /* Высокий z-index, чтобы окно было поверх всех других элементов */
+}
+
+.modalContent {
+    background-color: white; /* Белый фон для модального окна */
+    padding: 20px;
+    border-radius: 10px; /* Скругленные углы */
+    width: 90%; /* Ширина окна */
+    max-width: 600px; /* Максимальная ширина модального окна */
+    position: relative; /* Относительное позиционирование для закрывающей кнопки */
+    z-index: 99998; /* Высокий z-index для контейнера */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Тень для модального окна */
+}
+
+.close {
+    position: absolute; /* Абсолютное позиционирование для кнопки закрытия */
+    top: 10px;
+    right: 20px;
+    font-size: 24px;
+    cursor: pointer; /* Курсор-указатель для кнопки закрытия */
+}
+
+.productItem {
+    display: flex; /* Используем флексбокс для выравнивания */
+    flex-direction: column; /* Изменяем направление на колонку */
+    padding: 15px; /* Увеличиваем внутренние отступы */
+    border-bottom: 1px solid #eee; /* Разделительная линия между товарами */
+    position: relative; /* Для абсолютного позиционирования внутри */
+    cursor: pointer; /* Указатель при наведении */
+    transition: background-color 0.3s; /* Плавный переход цвета фона */
+}
+
+.productItem:hover {
+    border-radius: 10px; /* Скругление углов при наведении */
+    background-color: #f0f0f0; /* Цвет фона при наведении */
+}
+
+.productName {
+    font-size: 16px; /* Увеличиваем размер шрифта названия товара */
+    font-weight: bold; /* Жирное начертание */
+    color: #333; /* Цвет текста */
+}
+
+.productInfoLine {
+    font-size: 14px; /* Увеличиваем размер шрифта для стоимости товара */
+    color: #666; /* Цвет текста для стоимости */
+    margin-top: 5px; /* Отступ сверху */
+}
+
+.pagination {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px; /* Отступ сверху для пагинации */
+}
+
+.paginationButton {
+    padding: 10px 15px;
+    background-color: #007bff; /* Цвет фона */
+    color: white; /* Цвет текста */
+    cursor: pointer; /* Курсор указатель */
+    border-radius: 5px; /* Закругленные углы */
+    transition: background-color 0.3s; /* Плавный переход цвета фона */
+}
+
+.paginationButton:hover:not(.disabled) {
+    background-color: #0056b3; /* Цвет фона при наведении */
+}
+
+.disabled {
+    background-color: #ccc; /* Цвет фона для отключенных кнопок */
+    cursor: not-allowed; /* Курсор для отключенных кнопок */
+}
+
+/* Modal.module.css */
+
+.quantityControls {
+    display: flex; /* Flexbox for alignment */
+    align-items: center; /* Center items vertically */
+    margin-top: 10px; /* Margin for spacing */
+}
+
+.quantityButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px; /* Width of the buttons */
+    height: 30px; /* Height of the buttons */
+    background-color: #007bff; /* Button background color */
+    color: white; /* Button text color */
+    cursor: pointer; /* Pointer cursor on hover */
+    border-radius: 5px; /* Rounded corners */
+    margin: 0 5px; /* Margin between buttons */
+    transition: background-color 0.3s; /* Transition for hover effect */
+}
+
+.quantityButton:hover {
+    background-color: #0056b3; /* Darker color on hover */
+}
+
+.quantityDisplay {
+    font-size: 16px; /* Font size for the quantity display */
+    margin: 0 10px; /* Margin around the display */
+}
+
+.saveButton {
+    padding: 10px 15px; /* Отступы для кнопки сохранения */
+    background-color: #e3e3e3; /* Серо-синий цвет фона кнопки */
+    color: black; /* Чёрный цвет текста */
+    cursor: pointer; /* Указатель при наведении */
+    border-radius: 5px; /* Скругленные углы */
+    margin-top: 20px; /* Отступ сверху */
+    text-align: center; /* Центрируем текст */
+    transition: background-color 0.3s, transform 0.3s; /* Плавный переход для фона и эффекта увеличения */
+    border: 1px solid transparent; /* Прозрачная граница */
+}
+
+.saveButton:hover {
+    background-color: #bce0ed; /* Темнее цвет фона при наведении */
+    transform: scale(1.005); /* Увеличение при наведении */
+    background-color: #bce0ed; /* Темнее цвет фона при наведении */
+}
+
+.saveButton:active {
+    transform: scale(0.95); /* Уменьшение при нажатии */
+}
+
+
+
+/* Modal.module.css */
+
+/* Modal.module.css */
