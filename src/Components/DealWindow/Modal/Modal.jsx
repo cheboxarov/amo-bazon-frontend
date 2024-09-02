@@ -14,7 +14,8 @@ const Modal = ({ onClose, products, onSearch, dealProducts, isProductsLoading, s
 
     const [quantities, setQuantities] = useState({});
     const [initialQuantities, setInitialQuantities] = useState({});
-    const itemsPerPage = 10;
+    const screenHeight = screen.height;
+    const itemsPerPage = Math.ceil(screenHeight / 70);
 
     useEffect(() => {
         const initial = {};

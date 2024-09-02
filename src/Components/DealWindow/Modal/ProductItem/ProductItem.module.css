@@ -2,7 +2,7 @@
     display: flex; /* Flexbox for product item */
     justify-content: space-between; /* Space between items */
     align-items: center; /* Center vertically */
-    padding: 10px; /* Padding */
+    padding: 5px; /* Padding */
     border-bottom: 1px solid #ddd; /* Divider line */
     cursor: pointer; /* Pointer cursor */
     transition: background-color 0.3s; /* Transition effect */
@@ -10,6 +10,12 @@
 
 .productItem:hover {
     background-color: #f7f7f7; /* Light gray background on hover */
+}
+
+.productNameContainer {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* Allow the product name to take available space */
 }
 
 .productName {
@@ -23,11 +29,13 @@
     font-size: 12px; /* Reduced font size for product info */
     color: #666; /* Text color */
     margin-top: 2px; /* Top margin */
+    margin-right: 10px;
 }
 
 .quantityControls {
     display: flex; /* Flexbox for quantity controls */
     align-items: center; /* Center vertically */
+    margin-left: auto; /* Pushes the controls to the right */
 }
 
 .quantityButton {

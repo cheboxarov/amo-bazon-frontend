@@ -4,12 +4,11 @@ import React from "react";
 const ModalProductItem = ({ product, setQuantities, quantities, handleProductClick }) => {
     return (
         <div key={product.id} className={styles.productItem}>
-            <div>
-                <span className={styles.productName}>{product.name}</span><br/>
-                <span className={styles.productInfoLine}>{`Цена: ${product.price_1} ₽    `}</span>
-                <span className={styles.productInfoLine}>{`Доступно: ${product.amount}`}</span>
+            <div className={styles.productNameContainer}>
+                <span className={styles.productName}>{product.name}</span>
             </div>
-
+            <span className={styles.productInfoLine}>{`Цена: ${product.price_1} ₽`}</span>
+            <span className={styles.productInfoLine}>{`Доступно: ${product.amount}`}</span>
             <div className={styles.quantityControls}>
                 <div
                     className={styles.quantityButton}
