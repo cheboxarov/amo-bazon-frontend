@@ -1,0 +1,84 @@
+/* ProductItem.module.css */
+
+.productItem {
+    display: flex; /* Используем флексбокс для выравнивания */
+    flex-direction: column; /* Изменяем направление на колонку */
+    padding: 10px; /* Увеличиваем внутренние отступы */
+    border-bottom: 1px solid #eee; /* Разделительная линия между товарами */
+    position: relative; /* Для абсолютного позиционирования внутри */
+    cursor: pointer; /* Указатель при наведении */
+    transition: background-color 0.3s; /* Плавный переход цвета фона */
+}
+
+.productItem:hover {
+    border-radius: 10px;
+    background-color: #f0f0f0; /* Цвет фона при наведении */
+}
+
+.productName {
+    font-size: 14px; /* Уменьшаем размер шрифта названия товара */
+    font-weight: bold; /* Жирное начертание */
+    color: #333; /* Цвет текста */
+    margin-right: 10px; /* Отступ справа */
+}
+
+.productInfoLine {
+    font-size: 13px; /* Уменьшаем размер шрифта для стоимости товара */
+    color: #666; /* Цвет текста для стоимости */
+}
+
+.expandedInfo {
+    border-radius: 4px; /* Скругленные углы */
+    overflow: hidden; /* Скрытие содержимого за пределами */
+    transition: max-height 0.5s ease, opacity 0.5s ease; /* Плавное изменение высоты и прозрачности */
+    max-height: 0; /* Начальная высота */
+    width: 95%; /* Ширина блока информации */
+    opacity: 0; /* Начальная прозрачность */
+    display: block; /* Позволяем блоку отображаться */
+}
+
+.expanded {
+    max-height: 200px; /* Максимальная высота при развертывании */
+    opacity: 1; /* Полная прозрачность при развертывании */
+}
+
+.quantityControls {
+    display: flex; /* Используем флексбокс для выравнивания кнопок */
+    justify-content: space-between; /* Разделение кнопок */
+    align-items: center; /* Вертикальное выравнивание по центру */
+    margin-top: 10px; /* Отступ сверху для контролов */
+}
+
+.quantityControls button {
+    margin: 0; /* Убираем отступы между кнопками */
+    padding: 8px 12px; /* Увеличенные внутренние отступы кнопок */
+    border: 1px solid #007bff; /* Граница кнопки */
+    background-color: #007bff; /* Цвет фона кнопки */
+    color: white; /* Белый цвет текста */
+    cursor: pointer; /* Указатель при наведении */
+    border-radius: 4px; /* Скругленные углы кнопки */
+    font-size: 14px; /* Размер шрифта */
+    transition: background-color 0.3s, border-color 0.3s; /* Плавные переходы */
+}
+
+.quantityControls button:hover {
+    background-color: darkblue; /* Цвет фона при наведении */
+    border-color: darkblue; /* Цвет границы при наведении */
+}
+
+.deleteButton {
+    padding: 0; /* Убираем внутренние отступы */
+    border: none; /* Без границы */
+    background-color: transparent; /* Прозрачный фон */
+    color: gray; /* Серый цвет текста */
+    cursor: pointer; /* Указатель при наведении */
+    font-size: 25px; /* Размер шрифта для крестика */
+    transition: color 0.3s; /* Плавный переход цвета текста */
+    position: absolute; /* Абсолютное позиционирование */
+    top: 5px; /* Отступ сверху */
+    right: 10px; /* Отступ справа */
+}
+
+.deleteButton:hover {
+    color: red; /* Красный цвет при наведении */
+}

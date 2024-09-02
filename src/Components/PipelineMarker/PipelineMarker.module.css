@@ -1,0 +1,24 @@
+.pipelineMarker {
+    background-color: rgba(0, 123, 255, 0.15); /* Полупрозрачный фон */
+    color: #4a90e2; /* Цвет текста */
+    border: 1px solid #4a90e2; /* Цветной контур */
+    border-radius: 4px; /* Закругленные углы */
+    font-size: 10px; /* Уменьшенный размер шрифта */
+    font-weight: bold; /* Жирное начертание */
+    display: inline-flex; /* Используем флекс для центрирования */
+    padding-left: 3px;
+    padding-right: 3px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Более легкая тень */
+    transition: background-color 0.3s ease; /* Плавный переход цвета фона */
+    margin-left: 10px; /* Отступ слева от других элементов */
+    height: 16px;
+}
+
+.pipelineMarkerText {
+    margin-bottom: 3px;
+}
+
+.pipelineMarker:hover {
+    background-color: rgba(0, 123, 255, 0.25); /* Темнее фон при наведении */
+    cursor: pointer; /* Указатель при наведении */
+}
