@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styles from './Products.module.css';
 import ProductItem from "./ProductItem/ProductItem"; // Импортируем стили
 
-const ProductsWidget = ({ products, openModal }) => {
+const ProductsWidget = ({ setProducts, products, openModal }) => {
     const [expandedProductId, setExpandedProductId] = useState(null);
 
     const handleToggle = (id) => {
@@ -19,7 +19,7 @@ const ProductsWidget = ({ products, openModal }) => {
                 <ul className={styles.productList}>
                     {products.map(product => (
                         <ProductItem product={product} expandedProductId={expandedProductId}
-                                     handleToggle={handleToggle.bind(this)}/>
+                                     handleToggle={handleToggle.bind(this)} setProducts={setProducts} products={products}/>
                     ))}
                 </ul>
             )}

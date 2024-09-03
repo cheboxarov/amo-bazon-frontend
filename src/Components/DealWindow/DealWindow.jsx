@@ -3,7 +3,8 @@ import styles from "./DealWindow.module.css";
 import DealDetails from "./DealDetails/DealDetails";
 import ProductsWindow from "./ProductsWindow/ProductsWindow";
 import { BASE_URL } from "../../settings";
-import Modal from "./Modal/Modal"; // Импортируем компонент модального окна
+import Modal from "./Modal/Modal";
+import ChecksList from "./ChecksList/ChecksList"; // Импортируем компонент модального окна
 
 const DealWindow = () => {
     const [products, setProducts] = useState([]);
@@ -40,9 +41,23 @@ const DealWindow = () => {
             });
     }, []);
 
+    const updateDeal = async () => {
+        setLoading(true)
+        const dealId = window.AMOCRM.data.current_card.id; // Получаем ID сделки
+        const response = await fetch(`${BASE_URL}/bazon-sale/${dealId}/detail`)
+        if (response.ok) {
+            const data = await response.json()
+            setProducts(data.items); // Устанавливаем товары прикрепленные к сделке
+            setDeal(data.document.Document);
+        } else {
+            setError('Ошибка при загрузке сделки');
+        }
+        setLoading(false)
+    }
+
     const fetchAllWarehouseProducts = () => {
         setProductsLoading(true)
-        fetch(`${BASE_URL}/bazon-items/tematechnics`) // Запрос на получение всех товаров
+        fetch(`${BASE_URL}/bazon-items/tematechnics?storage_id=${deal.storageID}`) // Запрос на получение всех товаров
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Ошибка при получении товаров на складе');
@@ -100,12 +115,19 @@ const DealWindow = () => {
     return (
         <div className="DealWindow">
             {deal && <DealDetails deal={deal}/>}
-            <ProductsWindow products={products} openModal={openModal}/>
-
+            <ProductsWindow products={products} openModal={openModal} setProducts={setProducts}/>
             {modalVisible && (
-                <Modal onClose={closeModal} products={allWarehouseProducts} dealProducts={products}
-                       onSearch={onSearch} isProductsLoading={isProductsLoading}
-                       setProductsLoading={setProductsLoading}/>
+                <Modal
+                    onClose={closeModal}
+                    products={allWarehouseProducts}
+                    dealProducts={products}
+                    onSearch={onSearch}
+                    isProductsLoading={isProductsLoading}
+                    setProductsLoading={setProductsLoading}
+                    closeModal={closeModal}
+                    updateDeal={updateDeal}
+                    deal={deal}
+                />
             )}
         </div>
     );

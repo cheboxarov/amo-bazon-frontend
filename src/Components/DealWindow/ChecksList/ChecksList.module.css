@@ -1,0 +1,39 @@
+/* Components/ChecksList.module.css */
+
+.checksContainer {
+    max-width: 600px; /* Максимальная ширина контейнера */
+    margin: 20px auto; /* Центрирование контейнера */
+    padding: 10px; /* Внутренние отступы */
+    background-color: #f9f9f9; /* Цвет фона */
+    border-radius: 8px; /* Скругленные углы */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Тень для контейнера */
+}
+
+.checkItem {
+    border: 1px solid #ddd; /* Граница для каждого чека */
+    border-radius: 4px; /* Скругленные углы для чеков */
+    padding: 10px; /* Внутренние отступы для чеков */
+    margin-bottom: 10px; /* Отступ между чеками */
+}
+
+.checkTitle {
+    font-size: 16px; /* Размер шрифта для заголовка чека */
+    font-weight: bold; /* Жирное начертание заголовка */
+    color: #333; /* Цвет текста заголовка */
+    margin-bottom: 5px; /* Отступ снизу заголовка */
+}
+
+.checkDetail {
+    font-size: 14px; /* Размер шрифта для деталей чека */
+    color: #666; /* Цвет текста для деталей */
+    margin: 2px 0; /* Вертикальный отступ между деталями */
+}
+
+.loading {
+    text-align: center; /* Центрирование текста загрузки */
+}
+
+.error {
+    color: red; /* Цвет текста ошибки */
+    text-align: center; /* Центрирование текста ошибки */
+}

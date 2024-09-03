@@ -82,3 +82,24 @@
 .deleteButton:hover {
     color: red; /* Красный цвет при наведении */
 }
+
+.spinner {
+    border: 2px solid transparent;
+    border-top: 2px solid red;
+    border-radius: 50%;
+    width: 12px;
+    height: 12px;
+    animation: spin 0.7s linear infinite;
+    margin: auto;
+    top: 10px; /* Отступ сверху */
+    right: 10px; /* Отступ справа */
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}

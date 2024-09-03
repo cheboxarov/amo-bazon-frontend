@@ -7,13 +7,16 @@ import Pagination from "./Pagination/Pagination";
 import SearchTab from "./SearchTab/SearchTab";
 import mainStyles from "../DealWindow.module.css";
 
-const Modal = ({ onClose, products, onSearch, dealProducts, isProductsLoading, setProductsLoading }) => {
+const Modal = ({ onClose, products, onSearch, dealProducts,
+                   isProductsLoading, setProductsLoading, closeModal, updateDeal, deal }) => {
     const [currentPage, setCurrentPage] = useState(1);
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [searchTerm, setSearchTerm] = useState("");
 
     const [quantities, setQuantities] = useState({});
     const [initialQuantities, setInitialQuantities] = useState({});
+    const [progress, setProgress] = useState(0); // Добавляем состояние для прогресса
+
     const screenHeight = screen.height;
     const itemsPerPage = Math.ceil(screenHeight / 70);
 
@@ -52,7 +55,7 @@ const Modal = ({ onClose, products, onSearch, dealProducts, isProductsLoading, s
     };
 
     const handleSearch = async () => {
-        setCurrentPage(1)
+        setCurrentPage(1);
         setProductsLoading(true);
         const response = await fetch(`${BASE_URL}/bazon-items/tematechnics?search=${searchTerm}`);
 
@@ -65,19 +68,36 @@ const Modal = ({ onClose, products, onSearch, dealProducts, isProductsLoading, s
         setProductsLoading(false);
     };
 
-    const handleSave = () => {
-        console.log(Object.keys(quantities)
-            .filter(id => quantities[id] > 0)
-            .map(id => ({
-                productId: id,
-                quantity: quantities[id],
-            })));
-        console.log(Object.keys(dealProducts).map(
-            id => ({
-                productId: id,
-                quantity: dealProducts[id]
-            })
-        ));
+    const handleSave = async () => {
+        const dealId = window.AMOCRM.data.current_card.id;
+        const itemsToUpdate = Object.keys(quantities)
+            .filter(id => quantities[id] > 0 && quantities[id] !== initialQuantities[id]);
+        setProgress(1)
+
+        for (let i = 0; i < itemsToUpdate.length; i++) {
+            const id = itemsToUpdate[i];
+            const response = await fetch(`${BASE_URL}/bazon-sale/${dealId}/add-item`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    "dealId": dealId,
+                    "items": [
+                        {
+                            storageId: deal.storageID,
+                            productId: id,
+                            quantity: quantities[id],
+                        }
+                    ],
+                })
+            });
+            if (response.ok) {
+                setProgress(((i + 1) / itemsToUpdate.length) * 100); // Обновляем прогресс
+            }
+        }
+        closeModal();
+        updateDeal();
     };
 
     // Проверка, изменились ли количества
@@ -86,7 +106,6 @@ const Modal = ({ onClose, products, onSearch, dealProducts, isProductsLoading, s
             .filter(id => quantities[id] > 0) // Фильтруем ключи, оставляя только те, где quantity больше 0
             .some(id => quantities[id] !== initialQuantities[id]); // Проверяем, изменились ли значения
     };
-
 
     if (isProductsLoading) {
         return (
@@ -130,6 +149,11 @@ const Modal = ({ onClose, products, onSearch, dealProducts, isProductsLoading, s
                         Сохранить
                     </div>
                 )}
+
+                {/* Прогресс-бар */}
+                {progress > 0 && (<div className={styles.progressBarContainer}>
+                    <div className={styles.progressBar} style={{width: `${progress}%`}}></div>
+                </div>)}
 
                 {/* Пагинация */}
                 <Pagination currentPage={currentPage} nextPage={nextPage} prevPage={prevPage} totalPages={totalPages} />
