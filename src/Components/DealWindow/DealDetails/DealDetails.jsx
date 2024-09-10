@@ -1,10 +1,10 @@
 import React from 'react';
 import styles from './DealDetails.module.css';
-import ChecksList from "../ChecksList/ChecksList"; // Импортируем стили
+import ChecksList from "../ChecksList/ChecksList";
+import MoveButtons from "./MoveButtons/MoveButtons"; // Импортируем стили
 
-const DealDetails = ({ deal }) => {
-    console.log(deal); // Для отладки
-
+const DealDetails = ({ store }) => {
+    const deal = store.state.currentDeal.dealDetails
     return (
         <div className={styles.dealDetailsContainer}>
                 <h2 className={styles.dealTitle}>{deal.name}</h2>
@@ -27,7 +27,8 @@ const DealDetails = ({ deal }) => {
                 <p className={styles.dealItem}><strong>Склад выдачи:</strong> {deal.storageName}</p>
                 <a className={styles.dealLink} href={deal.siteHref} target="_blank" rel="noopener noreferrer">Ссылка на
                         сделку</a>
-            <ChecksList/>
+            <MoveButtons store={store} />
+            <ChecksList store={store}/>
         </div>
     );
 };

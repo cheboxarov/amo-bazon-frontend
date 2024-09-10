@@ -5,61 +5,96 @@ import { getPipelineLeads } from "./Utils/PipelineUtils";
 import PipelineMarker from "./Components/PipelineMarker/PipelineMarker";
 import { getBazonDeals } from "./HttpService/HttpClient";
 import {BASE_URL} from "./settings";
+import store from "./state";
+import DealWindow from "./Components/DealWindow/DealWindow";
 
 const Widget = {
 	render(self) {
 		const AvaliableWindows = ["leads", "leads-pipeline"];
 		if (!AvaliableWindows.includes(window.AMOCRM.data.current_entity)) return;
 
-		let productsField = document.querySelector(`[data-id="1263491"]`);
-		if (productsField) {
+		if (window.AMOCRM.data.current_entity === "leads") {
+			store.updateCurrentDeal().then();
+			let productsField = document.querySelector(`[data-id="1263491"]`);
+			if (!productsField)
+				return;
 			const mainElement = document.createElement('div');
 			productsField.replaceWith(mainElement);
 			mainElement.setAttribute('class', 'tema_bazon_widget');
-
-			ReactDOM.createRoot(mainElement).render(
-				<React.StrictMode>
-					<App widget={self} />
-				</React.StrictMode>
-			);
+			store.setRenderDeal(() => {
+				ReactDOM.createRoot(mainElement).render(
+					<React.StrictMode>
+						<DealWindow store={store} />
+					</React.StrictMode>
+				);
+			})
+			store.renderDeal()
 		} else if (window.AMOCRM.data.current_entity === "leads-pipeline") {
+
+			const renderLeadsPipeline = () => {
+
+				if (!Array.isArray(leads)) {
+					console.error("getPipelineLeads did not return an array");
+					return;
+				}
+
+				getBazonDeals(leads).then(bazonDeals => {
+					console.log(bazonDeals);
+					bazonDeals.forEach((bazonDeal) => {
+						let leadItem = document.querySelector(`[data-id="${bazonDeal.amo_lead_id}"]`);
+
+						if (!leadItem) {
+							console.warn(`Lead item with ID ${bazonDeal.amo_lead_id} not found`);
+							return;
+						}
+
+						const pipelineElement = document.createElement("div");
+						pipelineElement.setAttribute("class", "bazon_tag");
+						const tagsField = leadItem.getElementsByClassName("pipeline_leads__tag pipeline_leads__tag-add")[0]; // Получаем первый элемент с классом
+
+						if (tagsField) {
+							if (tagsField.getElementsByClassName("bazon_tag").length === 0) {
+								tagsField.appendChild(pipelineElement); // Добавляем новый элемент в tagsField
+							}
+						} else {
+							console.warn("Tags field not found");
+						}
+
+						console.log(`Rendering PipelineMarker for lead ID: ${bazonDeal.amo_lead_id}`);
+
+						ReactDOM.createRoot(pipelineElement).render(
+							<React.StrictMode>
+								<PipelineMarker />
+							</React.StrictMode>
+						);
+					});
+				});
+			};
+
 			let leads = getPipelineLeads();
+			let lastLength = leads.length;
+			renderLeadsPipeline();
 
-			if (!Array.isArray(leads)) {
-				console.error("getPipelineLeads did not return an array");
-				return;
-			}
-
-			getBazonDeals(leads).then(bazonDeals => {
-				console.log(bazonDeals);
-				bazonDeals.forEach((bazonDeal) => {
-					let leadItem = document.querySelector(`[data-id="${bazonDeal.amo_lead_id}"]`);
-
-					if (!leadItem) {
-						console.warn(`Lead item with ID ${bazonDeal.amo_lead_id} not found`);
+			const leadsSearching = () => {
+				const intervalId = setInterval(() => {
+					if (window.AMOCRM.data.current_entity !== "leads-pipeline") {
+						clearInterval(intervalId); // Останавливаем поиск, если текущая сущность больше не является "leads-pipeline"
 						return;
 					}
 
-					const pipelineElement = document.createElement("div");
-					pipelineElement.setAttribute("class", "bazon_tag")
-					const tagsField = leadItem.getElementsByClassName("pipeline_leads__tag pipeline_leads__tag-add")[0]; // Получаем первый элемент с классом
+					leads = getPipelineLeads();
+					const length = leads.length;
 
-					if (tagsField) {
-						if(tagsField.getElementsByClassName("bazon_tag").length === 0)
-							tagsField.appendChild(pipelineElement); // Добавляем новый элемент в tagsField
-					} else {
-						console.warn("Tags field not found");
+					if (lastLength !== length) {
+						renderLeadsPipeline();
+						lastLength = length;
 					}
+				}, 1000); // Проверяем каждые 1 секунду
+			};
 
-					console.log(`Rendering PipelineMarker for lead ID: ${bazonDeal.amo_lead_id}`);
+			leadsSearching();
 
-					ReactDOM.createRoot(pipelineElement).render(
-						<React.StrictMode>
-							<PipelineMarker />
-						</React.StrictMode>
-					);
-				});
-			});
+
 		}
 
 		return true;

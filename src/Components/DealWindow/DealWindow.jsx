@@ -6,100 +6,9 @@ import { BASE_URL } from "../../settings";
 import Modal from "./Modal/Modal";
 import ChecksList from "./ChecksList/ChecksList"; // Импортируем компонент модального окна
 
-const DealWindow = () => {
-    const [products, setProducts] = useState([]);
-    const [deal, setDeal] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [modalVisible, setModalVisible] = useState(false);
-    const [allWarehouseProducts, setAllWarehouseProducts] = useState([]); // Все товары на складе
-    const [isProductsLoading, setProductsLoading] = useState(false)
+const DealWindow = ({ store }) => {
 
-    useEffect(() => {
-        const dealId = window.AMOCRM.data.current_card.id; // Получаем ID сделки
-
-        // Запрос к вашему API для получения товаров по ID сделки
-        fetch(`${BASE_URL}/bazon-sale/${dealId}/detail`)
-            .then(response => {
-                if (!response.ok) {
-                    console.log(response);
-                    throw new Error('Ошибка при получении сделки');
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log(data);
-                setProducts(data.items); // Устанавливаем товары прикрепленные к сделке
-                setDeal(data.document.Document);
-            })
-            .catch(error => {
-                console.error('Ошибка при получении сделки:', error);
-                setError('Ошибка при загрузке сделки');
-            })
-            .finally(() => {
-                setLoading(false);
-            });
-    }, []);
-
-    const updateDeal = async () => {
-        setLoading(true)
-        const dealId = window.AMOCRM.data.current_card.id; // Получаем ID сделки
-        const response = await fetch(`${BASE_URL}/bazon-sale/${dealId}/detail`)
-        if (response.ok) {
-            const data = await response.json()
-            setProducts(data.items); // Устанавливаем товары прикрепленные к сделке
-            setDeal(data.document.Document);
-        } else {
-            setError('Ошибка при загрузке сделки');
-        }
-        setLoading(false)
-    }
-
-    const fetchAllWarehouseProducts = () => {
-        setProductsLoading(true)
-        fetch(`${BASE_URL}/bazon-items/tematechnics?storage_id=${deal.storageID}`) // Запрос на получение всех товаров
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Ошибка при получении товаров на складе');
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log(data);
-                setProductsLoading(false)
-                setAllWarehouseProducts(data); // Устанавливаем все товары на складе
-            })
-            .catch(error => {
-                console.error('Ошибка при получении товаров на складе:', error);
-            });
-    };
-
-    const onSearch = (items) => {
-        setAllWarehouseProducts(items);
-    }
-
-    const openModal = () => {
-        fetchAllWarehouseProducts(); // Загружаем товары перед открытием модального окна
-        setModalVisible(true);
-
-        // Скрываем элемент notes-wrapper на странице
-        const notesWrapper = document.querySelector('.notes-wrapper');
-        if (notesWrapper) {
-            notesWrapper.style.display = 'none'; // Скрываем элемент
-        }
-    };
-
-    const closeModal = () => {
-        setModalVisible(false);
-
-        // Восстанавливаем элемент notes-wrapper на странице
-        const notesWrapper = document.querySelector('.notes-wrapper');
-        if (notesWrapper) {
-            notesWrapper.style.display = ''; // Восстанавливаем элемент
-        }
-    };
-
-    if (loading) {
+    if (store.state.currentDeal.isDealLoading) {
         return (
             <div className={styles.loading}>
                 <div className={styles.spinner}></div>
@@ -108,25 +17,29 @@ const DealWindow = () => {
         );
     }
 
+    const error = store.state.currentDeal.productsWindow.error
     if (error) {
         return <div className={styles.error}>{error}</div>;
     }
 
+    const isModalOpen = store.state.currentDeal.productsWindow.isOpen
+    const dealDetails = store.state.currentDeal.dealDetails
+
+    if (!dealDetails) {
+        return (
+            <div>
+                Сделка не найдена
+            </div>
+        )
+    }
+
     return (
         <div className="DealWindow">
-            {deal && <DealDetails deal={deal}/>}
-            <ProductsWindow products={products} openModal={openModal} setProducts={setProducts}/>
-            {modalVisible && (
+            <DealDetails store={store}/>
+            <ProductsWindow store={store}/>
+            {isModalOpen && (
                 <Modal
-                    onClose={closeModal}
-                    products={allWarehouseProducts}
-                    dealProducts={products}
-                    onSearch={onSearch}
-                    isProductsLoading={isProductsLoading}
-                    setProductsLoading={setProductsLoading}
-                    closeModal={closeModal}
-                    updateDeal={updateDeal}
-                    deal={deal}
+                    store={store}
                 />
             )}
         </div>
