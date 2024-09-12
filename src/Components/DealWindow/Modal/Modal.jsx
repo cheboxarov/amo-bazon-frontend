@@ -74,6 +74,12 @@ const Modal = ({ store }) => {
         return (
             <div className={styles.modal}>
                 <div className={styles.modalContent}>
+                    <span className={styles.close} onClick={store.closeProductsWindow.bind(store)}>&times;</span>
+                    <h2>Выберите товары для добавления</h2>
+
+                    {/* Поле поиска и кнопка */}
+                    <SearchTab setSearchTerm={setSearchTerm} handleSearch={handleSearch} searchTerm={searchTerm}/>
+
                     <div className={mainStyles.loading}>
                         <div className={mainStyles.spinner}></div>
                         <div>Загрузка товаров с Bazon</div>
@@ -90,7 +96,7 @@ const Modal = ({ store }) => {
                 <h2>Выберите товары для добавления</h2>
 
                 {/* Поле поиска и кнопка */}
-                <SearchTab setSearchTerm={setSearchTerm} handleSearch={handleSearch} searchTerm={searchTerm} />
+                <SearchTab setSearchTerm={setSearchTerm} handleSearch={handleSearch} searchTerm={searchTerm}/>
 
                 {currentProducts.length > 0 ? (
                     currentProducts.map(product => (
@@ -115,7 +121,7 @@ const Modal = ({ store }) => {
 
                 {/* Прогресс-бар */}
                 {progress > 0 && (<div className={styles.progressBarContainer}>
-                    <div className={styles.progressBar} style={{ width: `${progress}%` }}></div>
+                    <div className={styles.progressBar} style={{width: `${progress}%`}}></div>
                 </div>)}
 
                 {/* Пагинация */}

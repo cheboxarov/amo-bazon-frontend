@@ -1,7 +1,8 @@
 import React from 'react';
 import styles from './DealDetails.module.css';
 import ChecksList from "../ChecksList/ChecksList";
-import MoveButtons from "./MoveButtons/MoveButtons"; // Импортируем стили
+import MoveButtons from "./MoveButtons/MoveButtons";
+import PayContainer from "./PayContainer/PayContainer"; // Импортируем стили
 
 const DealDetails = ({ store }) => {
     const deal = store.state.currentDeal.dealDetails
@@ -28,6 +29,7 @@ const DealDetails = ({ store }) => {
                 <a className={styles.dealLink} href={deal.siteHref} target="_blank" rel="noopener noreferrer">Ссылка на
                         сделку</a>
             <MoveButtons store={store} />
+            <PayContainer store={store} />
             <ChecksList store={store}/>
         </div>
     );

@@ -19,12 +19,78 @@ const store = {
                 isOrdersLoading: false,
                 entitys: [],
                 error: null
+            },
+            paySources: [],
+            paidSources: {}
+        }
+    },
+
+    async fetchPaidSources() {
+        const dealId = this.state.currentDeal.dealId
+        const response = await fetch(`${BASE_URL}/bazon-sale/${dealId}/get-paid-sources`)
+        if (response.ok) {
+            this.state.currentDeal.paidSources = await response.json()
+        }
+    },
+
+    async fetchPaySources() {
+        const dealId = this.state.currentDeal.dealId
+        const response = await fetch(`${BASE_URL}/bazon-sale/${dealId}/get-pay-sources`)
+        if (response.ok) {
+            this.state.currentDeal.paySources = await response.json()
+        }
+    },
+
+    async dealPayBack(amount, source) {
+        const dealId = this.state.currentDeal.dealId
+        try {
+            const response = await fetch(`${BASE_URL}/bazon-sale/${dealId}/pay-back`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    pay_source: source,
+                    pay_sum: amount,
+                })
+            })
+            if (response.ok) {
+                await this.updateCurrentDeal()
+            } else {
+                console.error(response.errored)
             }
+        } catch (error) {
+            console.log(error)
+        }
+    },
+
+    async addDealPay(amount, source, comment) {
+        const dealId = this.state.currentDeal.dealId
+        try {
+            const response = await fetch(`${BASE_URL}/bazon-sale/${dealId}/add-pay`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    pay_source: source,
+                    pay_sum: amount,
+                    comment: comment
+                })
+            })
+            if (response.ok) {
+                await this.updateCurrentDeal()
+            } else {
+                console.error(response.errored)
+            }
+        } catch (error) {
+            console.log(error)
         }
     },
 
     async moveDeal(state) {
         try {
+            this.setDealLoading(true)
             const dealId = this.state.currentDeal.dealId
             const response = await fetch(`https://wlovem.ru/amo-bazon/bazon-sale/${dealId}/move`, {
                 method: "POST",
@@ -39,9 +105,11 @@ const store = {
                 await this.updateCurrentDeal()
             } else {
                 console.log(response.errored)
+                this.setDealLoading(false)
             }
         } catch (e) {
             console.error(e)
+            this.setDealLoading(false)
         }
     },
 
@@ -51,6 +119,10 @@ const store = {
 
     async reserveDeal() {
         await this.moveDeal("reserve")
+    },
+
+    async recreateDeal() {
+        await this.moveDeal("recreate")
     },
 
     async cancelDeal() {
@@ -186,6 +258,8 @@ const store = {
                 this.state.currentDeal.dealDetails = data.document.Document;
                 this.setDealProducts(data.items);
                 await this.fetchOrders()
+                await this.fetchPaidSources()
+                await this.fetchPaySources()
             } else {
                 this.setDealError('Ошибка при загрузке сделки');
             }

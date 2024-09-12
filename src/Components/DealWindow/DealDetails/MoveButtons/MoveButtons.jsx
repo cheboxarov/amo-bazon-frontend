@@ -8,6 +8,7 @@ const MoveButtons = ({ store }) => {
     const reserveDeal = store.reserveDeal.bind(store)
     const cancelDeal = store.cancelDeal.bind(store)
     const giveDeal = store.giveDeal.bind(store)
+    const recreateDeal = store.recreateDeal.bind(store)
 
     switch (deal.state) {
         case "reserve":
@@ -29,6 +30,14 @@ const MoveButtons = ({ store }) => {
                     </div>
                     <div className={styles.declineButton} onClick={cancelDeal}>
                         Отменить
+                    </div>
+                </div>
+            )
+        case "canceled":
+            return (
+                <div className={styles.moveButtonsContainer}>
+                    <div className={styles.moveButton} onClick={recreateDeal}>
+                        Вернуть в работу
                     </div>
                 </div>
             )
