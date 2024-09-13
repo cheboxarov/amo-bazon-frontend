@@ -1,0 +1,95 @@
+.loading {
+    text-align: center; /* Центрируем текст загрузки */
+    font-size: 14px; /* Уменьшаем размер шрифта для текста загрузки */
+    color: #7dadf3; /* Цвет текста загрузки */
+    display: flex; /* Используем флексбокс для центровки содержимого */
+    flex-direction: column; /* Вертикальная центровка */
+    align-items: center; /* Горизонтальная центровка */
+}
+
+.spinner {
+    border: 4px solid rgba(0, 0, 0, 0.1); /* Светлый цвет фона */
+    border-left-color: #7eccec; /* Цвет левой части */
+    border-radius: 50%; /* Круглая форма */
+    width: 20px; /* Ширина */
+    height: 20px; /* Высота */
+    animation: spin 1s linear infinite; /* Анимация вращения */
+    margin-bottom: 8px; /* Отступ между спиннером и текстом */
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg); /* Начальное положение */
+    }
+    100% {
+        transform: rotate(360deg); /* Конечное положение */
+    }
+}
+
+.createContainer {
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.createTitle {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.inputField {
+    width: 95%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.selectField {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.buttonContainer {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.button {
+    padding: 7px 5px;
+    background-color: #c6ecc0;
+    color: #000;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.button:hover {
+    background-color: #b5efab;
+}
+
+.closeButton {
+    padding: 7px 5px;
+    background-color: #edbcb8;
+    color: #000;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.closeButton:hover {
+    background-color: #f87e7e;
+}

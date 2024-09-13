@@ -21,7 +21,47 @@ const store = {
                 error: null
             },
             paySources: [],
-            paidSources: {}
+            paidSources: {},
+            sources: [],
+            storages: [],
+            managers: {}
+        }
+    },
+
+    async createDeal(body) {
+        const response = await fetch(`${BASE_URL}/create-sale-document`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                ...body,
+                amoLeadId: this.state.currentDeal.dealId
+            })
+        })
+        if (response.ok) {
+            await this.updateCurrentDeal()
+        }
+    },
+
+    async fetchManagers() {
+        const response = await fetch(`${BASE_URL}/managers`)
+        if (response.ok) {
+            this.state.currentDeal.managers = await response.json()
+        }
+    },
+
+    async fetchSources() {
+        const response = await fetch(`${BASE_URL}/sources`)
+        if (response.ok) {
+            this.state.currentDeal.sources = await response.json()
+        }
+    },
+
+    async fetchStorages() {
+        const response = await fetch(`${BASE_URL}/storages`)
+        if (response.ok) {
+            this.state.currentDeal.storages = await response.json()
         }
     },
 
@@ -249,10 +289,14 @@ const store = {
 
     async updateCurrentDeal() {
         this.setDealLoading(true);
+        this.state.currentDeal.dealDetails = null
+        this.state.currentDeal.dealProducts = null
         try {
             this.state.currentDeal.dealId = window.AMOCRM.data.current_card.id; // Получаем ID сделки
             const response = await fetch(`${BASE_URL}/bazon-sale/${this.state.currentDeal.dealId}/detail`);
-
+            await store.fetchSources();
+            await store.fetchStorages();
+            await store.fetchManagers();
             if (response.ok) {
                 const data = await response.json();
                 this.state.currentDeal.dealDetails = data.document.Document;

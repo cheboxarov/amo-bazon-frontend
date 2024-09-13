@@ -4,7 +4,8 @@ import DealDetails from "./DealDetails/DealDetails";
 import ProductsWindow from "./ProductsWindow/ProductsWindow";
 import { BASE_URL } from "../../settings";
 import Modal from "./Modal/Modal";
-import ChecksList from "./ChecksList/ChecksList"; // Импортируем компонент модального окна
+import ChecksList from "./ChecksList/ChecksList";
+import CreateWindow from "./CreateWindow/CreateWindow"; // Импортируем компонент модального окна
 
 const DealWindow = ({ store }) => {
 
@@ -27,9 +28,7 @@ const DealWindow = ({ store }) => {
 
     if (!dealDetails) {
         return (
-            <div>
-                Сделка не найдена
-            </div>
+            <CreateWindow store={store} />
         )
     }
 
