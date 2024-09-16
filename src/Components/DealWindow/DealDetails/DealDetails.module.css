@@ -1,34 +1,62 @@
-/* Components/DealDetails.module.css */
-
 .dealDetailsContainer {
-    max-width: 400px; /* Устанавливаем максимальную ширину контейнера */
-    margin: 20px auto; /* Центрирование контейнера */
-    padding: 10px; /* Внутренние отступы */
-    background-color: #f9f9f9; /* Цвет фона */
-    border-radius: 8px; /* Скругленные углы */
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Тень для контейнера */
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: relative; /* Для позиционирования кнопки */
+}
+
+.headerContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .dealTitle {
-    font-size: 18px; /* Размер шрифта заголовка сделки */
-    font-weight: bold; /* Жирное начертание заголовка */
-    color: #333; /* Цвет текста заголовка */
-    margin-bottom: 10px; /* Отступ снизу заголовка */
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.rightButtons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.printButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    background: none;
+    cursor: pointer;
+    color: #007bff;
+    font-size: 18px;
+    transition: color 0.3s;
+}
+
+.printButton:hover {
+    color: #0056b3;
 }
 
 .dealItem {
-    font-size: 14px; /* Размер шрифта для описания сделки */
-    color: #666; /* Цвет текста описания */
-    margin: 5px 0; /* Вертикальный отступ между элементами */
+    font-size: 14px;
+    color: #666;
+    margin: 5px 0;
 }
 
 .dealLink {
-    display: inline-block; /* Для корректного отображения ссылки */
-    margin-top: 10px; /* Отступ сверху для ссылки */
-    color: #007bff; /* Цвет ссылки */
-    text-decoration: none; /* Убираем подчеркивание */
+    display: inline-block;
+    margin-top: 10px;
+    color: #007bff;
+    text-decoration: none;
 }
 
 .dealLink:hover {
-    text-decoration: underline; /* Подчеркивание при наведении на ссылку */
+    text-decoration: underline;
 }

@@ -28,6 +28,15 @@ const store = {
         }
     },
 
+    async fetchSourcesStoragesManagers() {
+        await Promise.all([
+            this.fetchStorages(),
+            this.fetchManagers(),
+            this.fetchSources()
+        ])
+        this.renderDeal()
+    },
+
     async createDeal(body) {
         const response = await fetch(`${BASE_URL}/create-sale-document`, {
             method: "POST",
@@ -294,17 +303,20 @@ const store = {
         try {
             this.state.currentDeal.dealId = window.AMOCRM.data.current_card.id; // Получаем ID сделки
             const response = await fetch(`${BASE_URL}/bazon-sale/${this.state.currentDeal.dealId}/detail`);
-            await store.fetchSources();
-            await store.fetchStorages();
-            await store.fetchManagers();
             if (response.ok) {
                 const data = await response.json();
+                console.log(data)
                 this.state.currentDeal.dealDetails = data.document.Document;
                 this.setDealProducts(data.items);
-                await this.fetchOrders()
-                await this.fetchPaidSources()
-                await this.fetchPaySources()
+                const tasks = [
+                    this.fetchOrders(),
+                    this.fetchPaySources()
+                ]
+                if (this.state.currentDeal.dealDetails.paid !== 0)
+                    tasks.push(this.fetchPaidSources())
+                await Promise.all(tasks)
             } else {
+                await this.fetchSourcesStoragesManagers()
                 this.setDealError('Ошибка при загрузке сделки');
             }
         } catch (error) {
@@ -320,6 +332,14 @@ const store = {
 
     setRenderDeal(render) {
         this.renderDeal = render;
+    },
+
+    async getPrintForm() {
+        const response = await fetch(`${BASE_URL}/bazon-sale/${this.state.currentDeal.dealId}/print-form`)
+        if (response.ok) {
+            return await response.json()
+        }
+        return null
     }
 
 };

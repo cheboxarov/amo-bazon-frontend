@@ -12,27 +12,47 @@ const MoveButtons = ({ store }) => {
 
     switch (deal.state) {
         case "reserve":
-            return (
-                <div className={styles.moveButtonsContainer}>
-                    <div className={styles.moveButton} onClick={giveDeal}>
-                        Выдать
+            if (Number(deal.paid) === Number(deal.sumFull)) {
+                return (
+                    <div className={styles.moveButtonsContainer}>
+                        <div className={styles.moveButton} onClick={giveDeal}>
+                            Выдать
+                        </div>
+                        <div className={styles.declineButton} onClick={cancelDeal}>
+                            Отменить
+                        </div>
                     </div>
-                    <div className={styles.declineButton} onClick={cancelDeal}>
-                        Отменить
+                )
+            } else {
+                return (
+                    <div className={styles.moveButtonsContainer}>
+                        <div className={styles.declineButton} onClick={cancelDeal}>
+                            Отменить
+                        </div>
                     </div>
-                </div>
-            )
+                )
+            }
         case "draft":
-            return (
-                <div className={styles.moveButtonsContainer}>
-                    <div className={styles.moveButton} onClick={reserveDeal}>
-                        Зарезериваровать
+            if (store.state.currentDeal.dealProducts.length) {
+                return (
+                    <div className={styles.moveButtonsContainer}>
+                        <div className={styles.moveButton} onClick={reserveDeal}>
+                            Зарезериваровать
+                        </div>
+                        <div className={styles.declineButton} onClick={cancelDeal}>
+                            Отменить
+                        </div>
                     </div>
-                    <div className={styles.declineButton} onClick={cancelDeal}>
-                        Отменить
+                )
+            } else {
+                return (
+                    <div className={styles.moveButtonsContainer}>
+                        <div className={styles.declineButton} onClick={cancelDeal}>
+                            Отменить
+                        </div>
                     </div>
-                </div>
-            )
+                )
+            }
         case "canceled":
             return (
                 <div className={styles.moveButtonsContainer}>

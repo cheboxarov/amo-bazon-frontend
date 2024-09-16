@@ -10,12 +10,14 @@ import DealWindow from "./Components/DealWindow/DealWindow";
 
 const Widget = {
 	render(self) {
+		console.log("render bazon")
 		const AvaliableWindows = ["leads", "leads-pipeline"];
 		if (!AvaliableWindows.includes(window.AMOCRM.data.current_entity)) return;
 
 		if (window.AMOCRM.data.current_entity === "leads") {
 			store.updateCurrentDeal().then();
-			let productsField = document.querySelector(`[data-id="1263491"]`);
+			let productsField = document.querySelector(`[data-id="1263491"]`); // tech
+			//let productsField = document.querySelector(`[data-id="1264434"]`); // kontrabaz
 			if (!productsField)
 				return;
 			const mainElement = document.createElement('div');
