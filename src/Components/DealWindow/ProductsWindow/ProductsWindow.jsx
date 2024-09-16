@@ -5,6 +5,8 @@ import ProductItem from "./ProductItem/ProductItem"; // Импортируем �
 const ProductsWidget = ({ store }) => {
     const [expandedProductId, setExpandedProductId] = useState(null);
 
+    const deal = store.state.currentDeal.dealDetails
+
     const handleToggle = (id) => {
         setExpandedProductId(expandedProductId === id ? null : id);
     };
@@ -14,15 +16,18 @@ const ProductsWidget = ({ store }) => {
 
     return (
         <div className={styles.productsContainer}>
-            <div onClick={store.openProductsWindow.bind(store)} className={styles.addProductButton}>
-                Добавить товар
+            <div className={styles.containerTitle}>
+                Товары
             </div>
+            { deal.state !== "issued" && (<div onClick={store.openProductsWindow.bind(store)} className={styles.addProductButton}>
+                Добавить товар
+            </div>)}
             {products.length === 0 ? (
                 <p>Товары отсутствуют.</p>
             ) : (
                 <ul className={styles.productList}>
                     {products.map(product => (
-                        <ProductItem product={product} expandedProductId={expandedProductId}
+                        <ProductItem store={store} product={product} expandedProductId={expandedProductId}
                                      handleToggle={handleToggle.bind(this)} setProducts={setProducts} products={products}/>
                     ))}
                 </ul>

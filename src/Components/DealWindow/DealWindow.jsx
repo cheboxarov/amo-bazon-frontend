@@ -36,6 +36,7 @@ const DealWindow = ({ store }) => {
         <div className="DealWindow">
             <DealDetails store={store}/>
             <ProductsWindow store={store}/>
+            <ChecksList store={store}/>
             {isModalOpen && (
                 <Modal
                     store={store}

@@ -7,7 +7,7 @@ const MoveButtons = ({ store }) => {
 
     const reserveDeal = store.reserveDeal.bind(store)
     const cancelDeal = store.cancelDeal.bind(store)
-    const giveDeal = store.giveDeal.bind(store)
+    const issueDeal = store.issueDeal.bind(store)
     const recreateDeal = store.recreateDeal.bind(store)
 
     switch (deal.state) {
@@ -15,7 +15,7 @@ const MoveButtons = ({ store }) => {
             if (Number(deal.paid) === Number(deal.sumFull)) {
                 return (
                     <div className={styles.moveButtonsContainer}>
-                        <div className={styles.moveButton} onClick={giveDeal}>
+                        <div className={styles.moveButton} onClick={issueDeal}>
                             Выдать
                         </div>
                         <div className={styles.declineButton} onClick={cancelDeal}>

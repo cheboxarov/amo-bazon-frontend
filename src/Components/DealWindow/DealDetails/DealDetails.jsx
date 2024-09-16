@@ -5,7 +5,8 @@ import styles from './DealDetails.module.css';
 import ChecksList from "../ChecksList/ChecksList";
 import MoveButtons from "./MoveButtons/MoveButtons";
 import PayContainer from "./PayContainer/PayContainer";
-import EditWindow from "./EditWindow/editWindow";
+import EditWindow from "./EditWindow/EditWindow";
+import EditableItem from "./EditableItem/EditableItem";
 
 const DealDetails = ({ store }) => {
 
@@ -15,10 +16,18 @@ const DealDetails = ({ store }) => {
         setEditOpen(!isEditOpen)
     }
 
+    const onCommentEdit = async (value) => {
+        console.log(value)
+        store.state.currentDeal.dealDetails.managerComment = value
+        store.renderDeal()
+    }
+
     const deal = store.state.currentDeal.dealDetails
     const handlePrint = async () => {
         const form = await store.getPrintForm();
-        const htmlContent = form.html;
+        let htmlContent = form.html;
+        htmlContent = htmlContent.replace('class="printLogo"', "")
+        htmlContent = htmlContent.replace("<img", '<img class="printLogo"')
         console.log(htmlContent)
         const printWindow = window.open('', '_blank', 'width=800,height=600');
 
@@ -57,7 +66,7 @@ const DealDetails = ({ store }) => {
             <p className={styles.dealItem}><strong>Электронная
                     почта:</strong> {deal.contractorEmail || "Не указана"}</p>
             <p className={styles.dealItem}><strong>Сумма:</strong> {deal.sumFull} ₽</p>
-            <p className={styles.dealItem}><strong>Комментарий менеджера:</strong> {deal.managerComment}</p>
+            <p className={styles.dealItem}><strong>Комментарий менеджера:</strong> <EditableItem store={store} defaultValue={deal.managerComment} saveHandler={onCommentEdit}/></p>
             <p className={styles.dealItem}><strong>Дата
                     создания:</strong> {new Date(deal.createdAt).toLocaleString()}</p>
             <p className={styles.dealItem}><strong>Менеджер:</strong> {deal.managerName}</p>
@@ -71,7 +80,6 @@ const DealDetails = ({ store }) => {
                     сделку</a>
             <MoveButtons store={store} />
             { store.state.currentDeal.dealDetails.state === "reserve" && (<PayContainer store={store} />)}
-            <ChecksList store={store}/>
         </div>
     );
 };

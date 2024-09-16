@@ -1,0 +1,31 @@
+.valueInput {
+    display: block;
+    min-height: 40px;
+    margin-right: 8px;
+    padding: 4px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: both;
+    line-height: 20px;
+}
+
+.saveButton {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.editButton {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: #007BFF;
+}
+
+.buttonsContainer {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+}

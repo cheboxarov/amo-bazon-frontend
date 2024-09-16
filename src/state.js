@@ -162,8 +162,8 @@ const store = {
         }
     },
 
-    async giveDeal() {
-        console.log("Give Deal", this.state.currentDeal);
+    async issueDeal() {
+        await this.moveDeal("issue")
     },
 
     async reserveDeal() {
@@ -229,9 +229,8 @@ const store = {
                 onProgress(((i + 1) / itemsToUpdate.length) * 100); // обновляем прогресс через callback
             }
         }
-
-        this.closeProductsWindow();
         await this.updateCurrentDeal();
+        this.closeProductsWindow();
     },
 
     async updateProductsWindow(search = null) {
@@ -299,7 +298,7 @@ const store = {
     async updateCurrentDeal() {
         this.setDealLoading(true);
         this.state.currentDeal.dealDetails = null
-        this.state.currentDeal.dealProducts = null
+        this.state.currentDeal.dealProducts = []
         try {
             this.state.currentDeal.dealId = window.AMOCRM.data.current_card.id; // Получаем ID сделки
             const response = await fetch(`${BASE_URL}/bazon-sale/${this.state.currentDeal.dealId}/detail`);
