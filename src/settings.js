@@ -1,3 +1,3 @@
-const BASE_URL = "https://wlovem.ru/amo-bazon"
+const BASE_URL = "https://apps.widgets-tema.ru/amo-bazon"
 
 export { BASE_URL }

@@ -28,6 +28,16 @@ const store = {
         }
     },
 
+    async fetchDealEdit() {
+        await fetch(`${BASE_URL}/bazon-sale/${this.state.currentDeal.dealId}/edit`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(this.state.currentDeal.dealDetails)
+        })
+    },
+
     async fetchSourcesStoragesManagers() {
         await Promise.all([
             this.fetchStorages(),

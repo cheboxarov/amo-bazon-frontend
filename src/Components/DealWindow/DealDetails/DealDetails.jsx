@@ -7,6 +7,7 @@ import MoveButtons from "./MoveButtons/MoveButtons";
 import PayContainer from "./PayContainer/PayContainer";
 import EditWindow from "./EditWindow/EditWindow";
 import EditableItem from "./EditableItem/EditableItem";
+import CreateContractorWindow from './CreateContractorWindow/CreateContractorWindow';
 
 const DealDetails = ({ store }) => {
 
@@ -17,8 +18,8 @@ const DealDetails = ({ store }) => {
     }
 
     const onCommentEdit = async (value) => {
-        console.log(value)
         store.state.currentDeal.dealDetails.managerComment = value
+        store.fetchDealEdit()
         store.renderDeal()
     }
 
@@ -42,7 +43,7 @@ const DealDetails = ({ store }) => {
 
     if (isEditOpen) {
         return (
-            <EditWindow store={store} closeEdit={changeEdit} />
+            <CreateContractorWindow store={store} />
         )
     }
 
@@ -51,9 +52,6 @@ const DealDetails = ({ store }) => {
             <div className={styles.headerContainer}>
                 <h2 className={styles.dealTitle}>{deal.name}</h2>
                 <div className={styles.rightButtons}>
-                    <div className={styles.printButton} onClick={changeEdit} title="Редактировать">
-                        <FiEdit/>
-                    </div>
                     <div className={styles.printButton} onClick={handlePrint} title="Напечатать чек и накладную">
                         <FaPrint/>
                     </div>
@@ -61,7 +59,12 @@ const DealDetails = ({ store }) => {
             </div>
             <p className={styles.dealItem}><strong>Номер сделки:</strong> {deal.number}</p>
             <p className={styles.dealItem}><strong>Состояние:</strong> {deal.state_}</p>
-            <p className={styles.dealItem}><strong>Контрагент:</strong> {deal.contractorName}</p>
+            <p className={styles.dealItem}>
+                <strong>Контрагент:</strong> {deal.contractorName}
+                <div className={styles.editButton} onClick={changeEdit}>
+                    <FiEdit /> Редактировать
+                </div> {/* Кнопка для открытия окна редактирования */}
+            </p>
             <p className={styles.dealItem}><strong>Телефон:</strong> {deal.contractorPhone || "Не указан"}</p>
             <p className={styles.dealItem}><strong>Электронная
                     почта:</strong> {deal.contractorEmail || "Не указана"}</p>
