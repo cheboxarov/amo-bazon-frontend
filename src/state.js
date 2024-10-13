@@ -28,6 +28,21 @@ const store = {
         }
     },
 
+    async createContractor(data) {
+        const response = await fetch(`${BASE_URL}/bazon-sale/${this.state.currentDeal.dealId}/contractor`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data)
+        })
+        const response_json = await response.json()
+        const contractorID = response_json.response.setContractor.Contractor.id
+        this.state.currentDeal.dealDetails.contractorID = contractorID
+        await this.fetchDealEdit()
+        this.updateCurrentDeal()
+    },
+
     async fetchDealEdit() {
         await fetch(`${BASE_URL}/bazon-sale/${this.state.currentDeal.dealId}/edit`, {
             method: "POST",
@@ -246,15 +261,19 @@ const store = {
     async updateProductsWindow(search = null) {
         this.setProductsLoading(true);
         try {
-            const subUrl = window.AMOCRM.constant('account').subdomain
+            const subUrl = window.AMOCRM.constant('account').subdomain;
             let response = null;
-            if (search) {
-                response = await fetch(`${BASE_URL}/bazon-items/${subUrl}?search=${search}`)
-            } else {
-                response = await fetch(`${BASE_URL}/bazon-items/${subUrl}?storage_id=${this.state.currentDeal.dealDetails.storageID}`)
-            }
+            response = await fetch(`${BASE_URL}/bazon-items/${subUrl}?storage_id=${this.state.currentDeal.dealDetails.storageID}`);
             if (response.ok) {
-                this.state.currentDeal.productsWindow.products = await response.json();
+                let products = await response.json();
+    
+                if (search) {
+                    products = products.filter(product =>
+                        product.name.toLowerCase().includes(search.toLowerCase())
+                    );
+                }
+    
+                this.state.currentDeal.productsWindow.products = products;
             } else {
                 console.error(response);
             }
@@ -264,12 +283,13 @@ const store = {
             this.setProductsLoading(false);
         }
     },
+    
 
     openProductsWindow() {
         this.state.currentDeal.productsWindow.isOpen = true
         const notesWrapper = document.querySelector('.notes-wrapper');
         if (notesWrapper) {
-            notesWrapper.style.display = 'none'; // Скрываем элемент
+            notesWrapper.style.display = 'none';
         }
         this.updateProductsWindow().then(() => {
             this.renderDeal()
@@ -280,7 +300,7 @@ const store = {
         this.state.currentDeal.productsWindow.isOpen = false
         const notesWrapper = document.querySelector('.notes-wrapper');
         if (notesWrapper) {
-            notesWrapper.style.display = ''; // Восстанавливаем элемент
+            notesWrapper.style.display = '';
         }
         this.renderDeal()
     },

@@ -77,7 +77,6 @@ const Modal = ({ store }) => {
                     <span className={styles.close} onClick={store.closeProductsWindow.bind(store)}>&times;</span>
                     <h2>Выберите товары для добавления</h2>
 
-                    {/* Поле поиска и кнопка */}
                     <SearchTab setSearchTerm={setSearchTerm} handleSearch={handleSearch} searchTerm={searchTerm}/>
 
                     <div className={mainStyles.loading}>
@@ -95,7 +94,6 @@ const Modal = ({ store }) => {
                 <span className={styles.close} onClick={store.closeProductsWindow.bind(store)}>&times;</span>
                 <h2>Выберите товары для добавления</h2>
 
-                {/* Поле поиска и кнопка */}
                 <SearchTab setSearchTerm={setSearchTerm} handleSearch={handleSearch} searchTerm={searchTerm}/>
 
                 {currentProducts.length > 0 ? (
@@ -112,23 +110,19 @@ const Modal = ({ store }) => {
                     <div>Нет доступных товаров на складе</div>
                 )}
 
-                {/* Кнопка "Сохранить" */}
                 {hasQuantitiesChanged() && (
                     <div className={styles.saveButton} onClick={handleSave}>
                         Сохранить
                     </div>
                 )}
 
-                {/* Прогресс-бар */}
                 {progress > 0 && (<div className={styles.progressBarContainer}>
                     <div className={styles.progressBar} style={{width: `${progress}%`}}></div>
                 </div>)}
 
-                {/* Пагинация */}
                 <Pagination currentPage={currentPage} nextPage={nextPage} prevPage={prevPage} totalPages={totalPages} />
             </div>
 
-            {/* Условный рендеринг ProductDetails */}
             {selectedProduct && (
                 <ProductDetails product={selectedProduct} onClose={closeDetails} />
             )}

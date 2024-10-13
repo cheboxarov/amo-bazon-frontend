@@ -43,8 +43,12 @@ const DealDetails = ({ store }) => {
 
     if (isEditOpen) {
         return (
-            <CreateContractorWindow store={store} />
+            <CreateContractorWindow store={store} onClose={changeEdit} />
         )
+    }
+
+    if(!deal) {
+        return (<div></div>)
     }
 
     return (
