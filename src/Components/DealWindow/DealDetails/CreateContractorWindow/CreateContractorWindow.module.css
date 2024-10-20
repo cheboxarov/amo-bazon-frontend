@@ -97,3 +97,25 @@
         transform: rotate(360deg);
     }
 }
+
+.contractorItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.selectButton {
+    padding: 5px 10px;
+    background-color: #c6ecc0;
+    color: #000;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-align: center;
+}
+
+.selectButton:hover {
+    background-color: #b5efab;
+}

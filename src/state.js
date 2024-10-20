@@ -24,8 +24,15 @@ const store = {
             paidSources: {},
             sources: [],
             storages: [],
-            managers: {}
-        }
+            managers: {},
+            contractor: null,
+            contractors: [],
+        },
+        error: null
+    },
+
+    setError(error) {
+        this.state.error = error
     },
 
     async createContractor(data) {
@@ -43,6 +50,26 @@ const store = {
         this.updateCurrentDeal()
     },
 
+    async getContractors() {
+        const response = await fetch(`${BASE_URL}/bazon-sale/${this.state.currentDeal.dealId}/contractors`)
+        if (response.status != 200) {
+            return
+        }
+        const response_json = await response.json()
+        this.state.currentDeal.contractors = response_json.response[0].result.contractors
+    },
+
+    async getContractor() {
+        console.log("Кидаю запрос на получение контрагента")
+        const response = await fetch(`${BASE_URL}/bazon-sale/${this.state.currentDeal.dealId}/contractor`)
+        console.log(`Получен ответ ${response.status}`)
+        if (response.status != 200) {
+            return
+        }
+        const response_json = await response.json()
+        this.state.currentDeal.contractor = response_json.response.getContractor.Contractor
+    },
+
     async fetchDealEdit() {
         await fetch(`${BASE_URL}/bazon-sale/${this.state.currentDeal.dealId}/edit`, {
             method: "POST",
@@ -53,7 +80,7 @@ const store = {
         })
     },
 
-    async fetchSourcesStoragesManagers() {
+    async fetchSubInfo() {
         await Promise.all([
             this.fetchStorages(),
             this.fetchManagers(),
@@ -166,7 +193,7 @@ const store = {
         try {
             this.setDealLoading(true)
             const dealId = this.state.currentDeal.dealId
-            const response = await fetch(`https://wlovem.ru/amo-bazon/bazon-sale/${dealId}/move`, {
+            const response = await fetch(`${BASE_URL}/bazon-sale/${dealId}/move`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -339,13 +366,15 @@ const store = {
                 this.setDealProducts(data.items);
                 const tasks = [
                     this.fetchOrders(),
-                    this.fetchPaySources()
+                    this.fetchPaySources(),
+                    this.getContractor(),
+                    this.getContractors()
                 ]
                 if (this.state.currentDeal.dealDetails.paid !== 0)
                     tasks.push(this.fetchPaidSources())
                 await Promise.all(tasks)
             } else {
-                await this.fetchSourcesStoragesManagers()
+                await this.fetchSubInfo()
                 this.setDealError('Ошибка при загрузке сделки');
             }
         } catch (error) {

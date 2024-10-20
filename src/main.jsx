@@ -7,6 +7,25 @@ import { getBazonDeals } from "./HttpService/HttpClient";
 import {BASE_URL} from "./settings";
 import store from "./state";
 import DealWindow from "./Components/DealWindow/DealWindow";
+import './App.css'
+
+const ErrorPopup = ({ message, isOpen, onClose }) => {
+	useEffect(() => {
+		if (isOpen) {
+		const timer = setTimeout(() => {
+			onClose();
+		}, 5000); // Автоматическое закрытие через 3 секунды
+
+		return () => clearTimeout(timer); // Очищаем таймер при размонтировании
+		}
+	}, [isOpen, onClose]);
+
+	return (
+		<div className={`error-popup ${isOpen ? 'show' : ''}`}>
+		<p>{message}</p>
+		</div>
+	);
+};
 
 const Widget = {
 	render(self) {
@@ -26,6 +45,7 @@ const Widget = {
 			store.setRenderDeal(() => {
 				ReactDOM.createRoot(mainElement).render(
 					<React.StrictMode>
+						<ErrorPopup message={store.state.error} isOpen={store.state.error != null} onClose={() => {store.state.error = null; store.renderDeal()}} />
 						<DealWindow store={store} />
 					</React.StrictMode>
 				);
@@ -80,7 +100,7 @@ const Widget = {
 			const leadsSearching = () => {
 				const intervalId = setInterval(() => {
 					if (window.AMOCRM.data.current_entity !== "leads-pipeline") {
-						clearInterval(intervalId); // Останавливаем поиск, если текущая сущность больше не является "leads-pipeline"
+						clearInterval(intervalId);
 						return;
 					}
 
@@ -91,7 +111,7 @@ const Widget = {
 						renderLeadsPipeline();
 						lastLength = length;
 					}
-				}, 1000); // Проверяем каждые 1 секунду
+				}, 1000);
 			};
 
 			leadsSearching();

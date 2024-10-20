@@ -8,6 +8,7 @@ import PayContainer from "./PayContainer/PayContainer";
 import EditWindow from "./EditWindow/EditWindow";
 import EditableItem from "./EditableItem/EditableItem";
 import CreateContractorWindow from './CreateContractorWindow/CreateContractorWindow';
+import ContractorWindow from './ContractorWindow/ContractorWindow';
 
 const DealDetails = ({ store }) => {
 
@@ -52,41 +53,41 @@ const DealDetails = ({ store }) => {
     }
 
     return (
-        <div className={styles.dealDetailsContainer}>
-            <div className={styles.headerContainer}>
-                <h2 className={styles.dealTitle}>{deal.name}</h2>
-                <div className={styles.rightButtons}>
-                    <div className={styles.printButton} onClick={handlePrint} title="Напечатать чек и накладную">
-                        <FaPrint/>
+        <div>
+            <div className={styles.dealDetailsContainer}>
+                <div className={styles.headerContainer}>
+                    <h2 className={styles.dealTitle}>{deal.name}</h2>
+                    <div className={styles.rightButtons}>
+                        <div className={styles.printButton} onClick={handlePrint} title="Напечатать чек и накладную">
+                            <FaPrint/>
+                        </div>
                     </div>
                 </div>
+                <p className={styles.dealItem}><strong>Номер сделки:</strong> {deal.number}</p>
+                <p className={styles.dealItem}><strong>Состояние:</strong> {deal.state_}</p>
+                <p className={styles.dealItem}>
+                    <strong>Контрагент:</strong> {deal.contractorName}
+                </p>
+                <p className={styles.dealItem}><strong>Телефон:</strong> {deal.contractorPhone || "Не указан"}</p>
+                <p className={styles.dealItem}><strong>Электронная
+                        почта:</strong> {deal.contractorEmail || "Не указана"}</p>
+                <p className={styles.dealItem}><strong>Сумма:</strong> {deal.sumFull} ₽</p>
+                <p className={styles.dealItem}><strong>Комментарий менеджера:</strong> <EditableItem store={store} defaultValue={deal.managerComment} saveHandler={onCommentEdit}/></p>
+                <p className={styles.dealItem}><strong>Дата
+                        создания:</strong> {new Date(deal.createdAt).toLocaleString()}</p>
+                <p className={styles.dealItem}><strong>Менеджер:</strong> {deal.managerName}</p>
+                <p className={styles.dealItem}><strong>Способ доставки:</strong> {deal.delivery}</p>
+                <p className={styles.dealItem}><strong>Количество товаров:</strong> {deal.itemsCount}</p>
+                <p className={styles.dealItem}><strong>Архив:</strong> {deal.isArchive ? "Да" : "Нет"}</p>
+                <p className={styles.dealItem}><strong>Комментарий к
+                        доставке:</strong> {deal.deliveryComment || "Нет комментариев"}</p>
+                <p className={styles.dealItem}><strong>Склад выдачи:</strong> {deal.storageName}</p>
+                <a className={styles.dealLink} href={deal.siteHref} target="_blank" rel="noopener noreferrer">Ссылка на
+                        сделку</a>
+                <MoveButtons store={store} />
+                { store.state.currentDeal.dealDetails.state === "reserve" && (<PayContainer store={store} />)}
             </div>
-            <p className={styles.dealItem}><strong>Номер сделки:</strong> {deal.number}</p>
-            <p className={styles.dealItem}><strong>Состояние:</strong> {deal.state_}</p>
-            <p className={styles.dealItem}>
-                <strong>Контрагент:</strong> {deal.contractorName}
-                <div className={styles.editButton} onClick={changeEdit}>
-                    <FiEdit /> Редактировать
-                </div> {/* Кнопка для открытия окна редактирования */}
-            </p>
-            <p className={styles.dealItem}><strong>Телефон:</strong> {deal.contractorPhone || "Не указан"}</p>
-            <p className={styles.dealItem}><strong>Электронная
-                    почта:</strong> {deal.contractorEmail || "Не указана"}</p>
-            <p className={styles.dealItem}><strong>Сумма:</strong> {deal.sumFull} ₽</p>
-            <p className={styles.dealItem}><strong>Комментарий менеджера:</strong> <EditableItem store={store} defaultValue={deal.managerComment} saveHandler={onCommentEdit}/></p>
-            <p className={styles.dealItem}><strong>Дата
-                    создания:</strong> {new Date(deal.createdAt).toLocaleString()}</p>
-            <p className={styles.dealItem}><strong>Менеджер:</strong> {deal.managerName}</p>
-            <p className={styles.dealItem}><strong>Способ доставки:</strong> {deal.delivery}</p>
-            <p className={styles.dealItem}><strong>Количество товаров:</strong> {deal.itemsCount}</p>
-            <p className={styles.dealItem}><strong>Архив:</strong> {deal.isArchive ? "Да" : "Нет"}</p>
-            <p className={styles.dealItem}><strong>Комментарий к
-                    доставке:</strong> {deal.deliveryComment || "Нет комментариев"}</p>
-            <p className={styles.dealItem}><strong>Склад выдачи:</strong> {deal.storageName}</p>
-            <a className={styles.dealLink} href={deal.siteHref} target="_blank" rel="noopener noreferrer">Ссылка на
-                    сделку</a>
-            <MoveButtons store={store} />
-            { store.state.currentDeal.dealDetails.state === "reserve" && (<PayContainer store={store} />)}
+            <ContractorWindow onEditHandle={changeEdit} store={store} />
         </div>
     );
 };

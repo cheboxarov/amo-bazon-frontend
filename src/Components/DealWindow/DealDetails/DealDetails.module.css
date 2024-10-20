@@ -8,6 +8,13 @@
     position: relative; /* Для позиционирования кнопки */
 }
 
+.editButton {
+    cursor: pointer;
+}
+.editButton:hover {
+    color: silver
+}
+
 .headerContainer {
     display: flex;
     justify-content: space-between;

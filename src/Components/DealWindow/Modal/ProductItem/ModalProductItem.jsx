@@ -51,13 +51,12 @@ const ModalProductItem = ({ product, setQuantities, quantities, handleProductCli
                 </div>
             </div>
 
-            {/* Div to open product details */}
             <div
                 className={styles.detailsButton}
                 onClick={() => handleProductClick(product)}
-                role="button" // Accessibility role
-                tabIndex={0} // Make div focusable
-                onKeyPress={(e) => { // Add keypress event for accessibility
+                role="button"
+                tabIndex={0}
+                onKeyPress={(e) => {
                     if (e.key === 'Enter' || e.key === ' ') {
                         handleProductClick(product);
                     }

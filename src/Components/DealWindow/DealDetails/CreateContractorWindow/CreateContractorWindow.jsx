@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./CreateContractorWindow.module.css";
 
 const CreateContractorWindow = ({ store, onClose }) => {
     const [isCreateOpen, setCreateOpen] = useState(true);
-    const deal = store.state.currentDeal.dealDetails
+    const deal = store.state.currentDeal.dealDetails;
     const [name, setName] = useState(deal.contractorName);
     const [phone, setPhone] = useState(deal.contractorPhone);
     const [email, setEmail] = useState(deal.contractorEmail);
@@ -15,6 +15,8 @@ const CreateContractorWindow = ({ store, onClose }) => {
     const [legalAddress, setLegalAddress] = useState("");
     const [realAddress, setRealAddress] = useState("");
     const [loading, setLoading] = useState(false);
+    const [searchQuery, setSearchQuery] = useState("");
+    const [filteredContractors, setFilteredContractors] = useState(store.state.currentDeal.contractors);
 
     const createClose = () => {
         onClose();
@@ -34,13 +36,29 @@ const CreateContractorWindow = ({ store, onClose }) => {
             legal_address: legalAddress,
             real_adress: realAddress,
         };
-        var contractodID = store.state.currentDeal.dealDetails.contractorID
-        if (contractodID != 1) {
-            contractorData.id = contractodID
+        const contractorID = store.state.currentDeal.dealDetails.contractorID;
+        if (contractorID !== 1) {
+            contractorData.id = contractorID;
         }
         await store.createContractor(contractorData);
         setLoading(false);
         createClose();
+    };
+
+    const handleSelectContractor = async (contractor) => {
+        console.log(contractor)
+        store.state.currentDeal.dealDetails.contractorID = contractor.id
+        await store.fetchDealEdit()
+        store.updateCurrentDeal()
+    };
+
+    const handleSearchChange = (e) => {
+        const query = e.target.value.toLowerCase();
+        setSearchQuery(query);
+        const filtered = store.state.currentDeal.contractors.filter((contractor) =>
+            contractor.name.toLowerCase().includes(query)
+        );
+        setFilteredContractors(filtered);
     };
 
     if (loading) {
@@ -138,10 +156,36 @@ const CreateContractorWindow = ({ store, onClose }) => {
 
             <div className={styles.buttonContainer}>
                 <div className={styles.button} onClick={handleCreateContractor}>
-                    Создать
+                    Изменить
                 </div>
                 <div className={styles.closeButton} onClick={createClose}>
                     Отменить
+                </div>
+            </div>
+            <br />
+            {/* Поле поиска */}
+            <div>
+                <input
+                    type="text"
+                    className={styles.inputField}
+                    placeholder="Поиск контрагента"
+                    value={searchQuery}
+                    onChange={handleSearchChange}
+                />
+                <div>
+                    {filteredContractors.map((contractor) => (
+                        <div key={contractor.id} className={styles.contractorItem}>
+                            <span>{contractor.name}</span>
+                            <span>{contractor.phone}</span>
+                            <span>{contractor.email}</span>
+                            <div
+                                className={styles.selectButton}
+                                onClick={() => handleSelectContractor(contractor)}
+                            >
+                                Выбрать
+                            </div>
+                        </div>
+                    ))}
                 </div>
             </div>
         </div>
