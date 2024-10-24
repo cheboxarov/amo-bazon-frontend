@@ -49,6 +49,15 @@ const store = {
         await this.fetchDealEdit()
         this.updateCurrentDeal()
     },
+    
+    async sendAmoUpdate() {
+        const response = await fetch(`${BASE_URL}/bazon-sale/${this.state.currentDeal.dealId}/update`)
+        if (response.status != 200) {
+            this.setError("Ошибка при обновлении сделки, попробуйте позже.")
+            return
+        }
+    },
+
 
     async getContractors() {
         const response = await fetch(`${BASE_URL}/bazon-sale/${this.state.currentDeal.dealId}/contractors`)
@@ -370,6 +379,7 @@ const store = {
                     this.getContractor(),
                     this.getContractors()
                 ]
+                await this.fetchSubInfo()
                 if (this.state.currentDeal.dealDetails.paid !== 0)
                     tasks.push(this.fetchPaidSources())
                 await Promise.all(tasks)

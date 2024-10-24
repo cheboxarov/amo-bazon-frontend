@@ -67,11 +67,15 @@ const CreateWindow = ({ store }) => {
                     onChange={(e) => setSelectedSource(e.target.value)}
                 >
                     <option value="">Выберите источник</option>
-                    {Object.entries(sources).map(([key, value]) => (
+                    {Object.entries(sources).map(([key, value]) => {
+                    if (value.isSystem) {
+                        return null
+                    }
+                    return (
                         <option key={key} value={value.id}>
-                            {value.name} {/* Используем 'name' для отображения */}
+                            {value.name}
                         </option>
-                    ))}
+                    )})}
                 </select>
 
                 <select
@@ -82,7 +86,7 @@ const CreateWindow = ({ store }) => {
                     <option value="">Выберите склад</option>
                     {Object.entries(storages).map(([key, value]) => (
                         <option key={key} value={value.id}>
-                            {value.name} {/* Используем 'name' для отображения */}
+                            {value.name}
                         </option>
                     ))}
                 </select>
@@ -95,7 +99,7 @@ const CreateWindow = ({ store }) => {
                     <option value="">Выберите менеджера</option>
                     {Object.entries(managers).map(([key, value]) => (
                         <option key={key} value={value.id}>
-                            {value.nickname} {/* Используем 'name' для отображения */}
+                            {value.nickname}
                         </option>
                     ))}
                 </select>

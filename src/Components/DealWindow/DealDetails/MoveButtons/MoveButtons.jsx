@@ -37,7 +37,7 @@ const MoveButtons = ({ store }) => {
                 return (
                     <div className={styles.moveButtonsContainer}>
                         <div className={styles.moveButton} onClick={reserveDeal}>
-                            Зарезериваровать
+                            Зарезервировать
                         </div>
                         <div className={styles.declineButton} onClick={cancelDeal}>
                             Отменить
