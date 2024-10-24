@@ -35,8 +35,8 @@ const Widget = {
 
 		if (window.AMOCRM.data.current_entity === "leads") {
 			store.updateCurrentDeal().then();
-			//let productsField = document.querySelector(`[data-id="1263491"]`); // tech
-			let productsField = document.querySelector(`[data-id="1264434"]`); // kontrabaz
+			let productsField = document.querySelector(`[data-id="1263491"]`); // tech
+			//let productsField = document.querySelector(`[data-id="1264434"]`); // kontrabaz
 			if (!productsField)
 				return;
 			const mainElement = document.createElement('div');

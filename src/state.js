@@ -215,10 +215,11 @@ const store = {
                 await this.updateCurrentDeal()
             } else {
                 console.log(response.errored)
+                this.setError("С сделкой кто-то уже работает.")
                 this.setDealLoading(false)
             }
         } catch (e) {
-            console.error(e)
+            this.setError("С сделкой кто-то уже работает.")
             this.setDealLoading(false)
         }
     },
