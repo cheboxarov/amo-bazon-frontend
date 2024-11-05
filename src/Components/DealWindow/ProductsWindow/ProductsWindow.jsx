@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styles from './Products.module.css';
 import ProductItem from "./ProductItem/ProductItem"; // Импортируем стили
+import DiscountContainer from './DiscountContainer/DiscountContainer';
 
 const ProductsWidget = ({ store }) => {
     const [expandedProductId, setExpandedProductId] = useState(null);
@@ -23,14 +24,16 @@ const ProductsWidget = ({ store }) => {
                 Добавить товар
             </div>)}
             {products.length === 0 ? (
-                <p>Товары отсутствуют.</p>
-            ) : (
-                <ul className={styles.productList}>
-                    {products.map(product => (
-                        <ProductItem store={store} product={product} expandedProductId={expandedProductId}
-                                     handleToggle={handleToggle.bind(this)} setProducts={setProducts} products={products}/>
-                    ))}
-                </ul>
+                <div>Товары отсутствуют. <div style={{ color: "red" }}>Добавьте товары чтобы зарезервировать!</div></div>
+            ) : (<div>
+                    <DiscountContainer store={store}/>
+                    <ul className={styles.productList}>
+                        {products.map(product => (
+                            <ProductItem store={store} product={product} expandedProductId={expandedProductId}
+                                        handleToggle={handleToggle.bind(this)} setProducts={setProducts} products={products}/>
+                        ))}
+                    </ul>
+                </div>
             )}
         </div>
     );

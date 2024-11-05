@@ -93,3 +93,7 @@
 .closeButton:hover {
     background-color: #f87e7e;
 }
+
+.error {
+    color: red;
+}

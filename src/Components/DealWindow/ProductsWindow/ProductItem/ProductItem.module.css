@@ -103,3 +103,59 @@
         transform: rotate(360deg);
     }
 }
+
+.discountWindow {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.discountInput input {
+    width: 95%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.discountSelect select {
+    width: 98%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.discountActions {
+    display: flex;
+    justify-content: space-between;
+}
+
+.discountAction {
+    color: #007bff;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 5px 10px;
+    transition: color 0.3s;
+}
+
+.discountAction:hover {
+    color: darkblue;
+}
+
+.discountButton {
+    color: #007bff;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 5px 10px;
+    transition: color 0.3s;
+}
+
+.discountButton:hover {
+    color: darkblue;
+}

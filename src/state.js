@@ -33,6 +33,25 @@ const store = {
 
     setError(error) {
         this.state.error = error
+        this.renderDeal()
+    },
+
+    async itemsEditCost(items) {
+        const dealId = this.state.currentDeal.dealId;
+        const response = await fetch(`${BASE_URL}/bazon-sale/${dealId}/items-edit-const`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                items: items
+            })
+        });
+        if (response.ok) {
+            store.updateCurrentDeal();
+        } else {
+            store.setError("С сделкой уже кто-то работает.");
+        }
     },
 
     async createContractor(data) {
@@ -80,13 +99,17 @@ const store = {
     },
 
     async fetchDealEdit() {
-        await fetch(`${BASE_URL}/bazon-sale/${this.state.currentDeal.dealId}/edit`, {
+        const response = await fetch(`${BASE_URL}/bazon-sale/${this.state.currentDeal.dealId}/edit`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(this.state.currentDeal.dealDetails)
         })
+        if (!response.ok) {
+            this.setError("С сделкой уже кто-то работает!")
+            this.updateCurrentDeal()
+        }
     },
 
     async fetchSubInfo() {
@@ -167,6 +190,7 @@ const store = {
             if (response.ok) {
                 await this.updateCurrentDeal()
             } else {
+                this.setError("С сделкой уже кто-то работает!")
                 console.error(response.errored)
             }
         } catch (error) {
@@ -191,6 +215,7 @@ const store = {
             if (response.ok) {
                 await this.updateCurrentDeal()
             } else {
+                this.setError("С сделкой уже кто-то работает!")
                 console.error(response.errored)
             }
         } catch (error) {
@@ -267,7 +292,7 @@ const store = {
         const storageId = this.state.currentDeal.dealDetails.storageID;
         const itemsToUpdate = Object.keys(quantities)
             .filter(id => quantities[id] > 0 && quantities[id] !== initialQuantities[id]);
-
+        var errored = false;
         for (let i = 0; i < itemsToUpdate.length; i++) {
             const id = itemsToUpdate[i];
             const response = await fetch(`${BASE_URL}/bazon-sale/${dealId}/add-item`, {
@@ -286,13 +311,20 @@ const store = {
                     ],
                 }),
             });
-
+            if (!response.ok) {
+                errored = true
+            }
             if (response.ok && onProgress) {
                 onProgress(((i + 1) / itemsToUpdate.length) * 100); // обновляем прогресс через callback
             }
         }
-        await this.updateCurrentDeal();
         this.closeProductsWindow();
+        if (errored) {
+            this.setError("С сделкой уже кто-то работает!")
+            this.renderDeal()
+        } else {
+            await this.updateCurrentDeal();
+        }
     },
 
     async updateProductsWindow(search = null) {
@@ -303,6 +335,11 @@ const store = {
             response = await fetch(`${BASE_URL}/bazon-items/${subUrl}?storage_id=${this.state.currentDeal.dealDetails.storageID}`);
             if (response.ok) {
                 let products = await response.json();
+
+                products = products.map((product) => {
+                    product.name = `${product.name} ${product._columns.char_crossnumbers}`
+                    return product
+                })
     
                 if (search) {
                     products = products.filter(product =>

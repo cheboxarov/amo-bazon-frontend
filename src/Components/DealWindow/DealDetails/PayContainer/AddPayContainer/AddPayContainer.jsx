@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import styles from './AddPayContainer.module.css'; // Импортируем стили
 
 const AddPayContainer = ({ store }) => {
@@ -6,9 +6,10 @@ const AddPayContainer = ({ store }) => {
     const [amount, setAmount] = useState('');
     const [comment, setComment] = useState('');
     const [selectedSource, setSelectedSource] = useState('');
+    const [error, setError] = useState('');
 
-    const deal = store.state.currentDeal.dealDetails
-    const payLast = deal.sumFull - deal.paid
+    const deal = store.state.currentDeal.dealDetails;
+    const payLast = deal.sumFull - deal.paid;
 
     if (payLast === 0) {
         return null;
@@ -16,26 +17,30 @@ const AddPayContainer = ({ store }) => {
 
     const openPay = () => {
         setPayOpen(true);
+        setError(''); // Reset error when opening the form
     };
 
     const closePay = () => {
         setPayOpen(false);
+        setError(''); // Reset error when closing the form
     };
 
-
-
-    const sources = store.state.currentDeal.paySources
+    const sources = store.state.currentDeal.paySources;
 
     const handleSubmit = async () => {
-        await store.addDealPay(amount, selectedSource, comment)
+        if (!comment) {
+            setError("Комментарий обязательно для заполнения!");
+            return;
+        }
+        setError(''); // Clear any existing errors
+        await store.addDealPay(amount, selectedSource, comment);
         closePay();
     };
-
 
     if (isPayOpen) {
         return (
             <div className={styles.payContainer}>
-                <div className={styles.payTitle}>Добавить оплату. Осталось {payLast} р. </div>
+                <div className={styles.payTitle}>Добавить оплату. Осталось {payLast} р.</div>
                 <input
                     type="text"
                     className={styles.inputField}
@@ -50,6 +55,7 @@ const AddPayContainer = ({ store }) => {
                     value={comment}
                     onChange={(e) => setComment(e.target.value)}
                 />
+                {error && <div className={styles.error}>{error}</div>}
                 <select
                     className={styles.selectField}
                     value={selectedSource}

@@ -12,7 +12,7 @@ const MoveButtons = ({ store }) => {
 
     switch (deal.state) {
         case "reserve":
-            if (Number(deal.paid) === Number(deal.sumFull)) {
+            if (Number(deal.paid) === Number(deal.sumFull) && store.state.currentDeal.dealProducts.length) {
                 return (
                     <div className={styles.moveButtonsContainer}>
                         <div className={styles.moveButton} onClick={issueDeal}>

@@ -1,0 +1,51 @@
+.discountWindow {
+    border-radius: 8px;
+    padding: 16px;
+    width: 250px;
+}
+
+.discountInput input {
+    width: 95%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    margin-bottom: 12px;
+}
+
+.discountActions {
+    display: flex;
+    justify-content: space-between;
+}
+
+.discountAction {
+    background-color: #007bff;
+    color: #ffffff;
+    font-size: 14px;
+    padding: 8px 12px;
+    border-radius: 4px;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.discountAction:hover {
+    background-color: #0056b3;
+}
+
+.discountButton {
+    color: #007bff;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 6px 12px;
+    border-radius: 4px;
+    background-color: #e9f5ff;
+    text-align: center;
+    display: inline-block;
+    transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+.discountButton:hover {
+    color: #0056b3;
+    background-color: #d0e7ff;
+}

@@ -1,44 +1,54 @@
-import React, {useEffect, useState} from "react";
-import styles from "./PayBackContainer.module.css"
+import React, { useEffect, useState } from "react";
+import styles from "./PayBackContainer.module.css";
 
 const PayBackContainer = ({ store }) => {
     const [isPayBackOpen, setPayBackOpen] = useState(false);
-    const [payBackAmount, setPayBackAmount] = useState('')
-    const [payBackSource, setPayBackSource] = useState('')
+    const [payBackAmount, setPayBackAmount] = useState('');
+    const [payBackSource, setPayBackSource] = useState('');
+    const [comment, setComment] = useState('');
+    const [error, setError] = useState('');
 
     const openPayBack = () => {
-        setPayBackOpen(true)
-    }
+        setPayBackOpen(true);
+        setError('');
+    };
 
     const closePayBack = () => {
-        setPayBackOpen(false)
-    }
+        setPayBackOpen(false);
+        setError('');
+    };
 
-    const deal = store.state.currentDeal.dealDetails
+    const deal = store.state.currentDeal.dealDetails;
 
     if (deal.paid === 0) {
-        return null
+        return null;
     }
 
-    const sources = store.state.currentDeal.paySources
-    const _paidSources = store.state.currentDeal.paidSources
-    const paidSources = []
+    const sources = store.state.currentDeal.paySources;
+    const _paidSources = store.state.currentDeal.paidSources;
+    const paidSources = [];
+
     Object.entries(_paidSources).forEach(([key, value]) => {
         sources.forEach((source) => {
-            console.log(key, value, source)
-            if(source.id === Number(key)) {
+            if (source.id === Number(key)) {
                 paidSources.push({
                     ...source,
                     paid: value,
-                })
+                });
             }
-        })
-    })
+        });
+    });
 
     const handlePayBack = async () => {
-        console.log(payBackAmount, payBackSource)
-        await store.dealPayBack(payBackAmount, payBackSource)
-    }
+        if (!comment) {
+            setError("Комментарий является обязательным полем.");
+            return;
+        }
+        
+        console.log(payBackAmount, payBackSource, comment);
+        await store.dealPayBack(payBackAmount, payBackSource, comment);
+        closePayBack();
+    };
 
     if (isPayBackOpen) {
         return (
@@ -59,12 +69,24 @@ const PayBackContainer = ({ store }) => {
                     <option value="" disabled>Выберите источник оплаты</option>
                     {paidSources.map(source => {
                         if (source.paid) {
-                        return (
-                        <option key={source.id} value={source.id}>
-                            {source.name} ({source.paid})
-                        </option>)
-                        }})}
+                            return (
+                                <option key={source.id} value={source.id}>
+                                    {source.name} ({source.paid})
+                                </option>
+                            );
+                        }
+                    })}
                 </select>
+
+                <input
+                    type="text"
+                    className={styles.inputField}
+                    placeholder="Комментарий"
+                    value={comment}
+                    onChange={(e) => setComment(e.target.value)}
+                />
+                {error && <div className={styles.error}>{error}</div>}
+
                 <div className={styles.button} onClick={handlePayBack}>
                     Сохранить
                 </div>
@@ -72,7 +94,7 @@ const PayBackContainer = ({ store }) => {
                     Закрыть
                 </div>
             </div>
-        )
+        );
     } else {
         return (
             <div className={styles.buttonContainer}>
@@ -82,6 +104,6 @@ const PayBackContainer = ({ store }) => {
             </div>
         );
     }
-}
+};
 
 export default PayBackContainer;

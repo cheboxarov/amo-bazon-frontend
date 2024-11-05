@@ -3,38 +3,54 @@ import styles from "./CreateWindow.module.css";
 
 const CreateWindow = ({ store }) => {
     const [isCreateOpen, setCreateOpen] = useState(false);
-    const [sources, setSources] = useState({}); // Инициализация как пустой объект
-    const [storages, setStorages] = useState({}); // Инициализация как пустой объект
-    const [managers, setManagers] = useState({})
+    const [sources, setSources] = useState({});
+    const [storages, setStorages] = useState({});
+    const [managers, setManagers] = useState({});
     const [comment, setComment] = useState("");
     const [loading, setLoading] = useState(false);
     const [selectedSource, setSelectedSource] = useState("");
     const [selectedStorage, setSelectedStorage] = useState("");
-    const [selectedManager, setSelectedManager] = useState("")
-
+    const [selectedManager, setSelectedManager] = useState("");
+    const [error, setError] = useState("");
 
     useEffect(() => {
         setSources(store.state.currentDeal.sources || {});
         setStorages(store.state.currentDeal.storages || {});
-        setManagers(store.state.currentDeal.managers)
+        setManagers(store.state.currentDeal.managers);
     }, [store]);
 
     const createOpen = () => {
         setCreateOpen(true);
+        setError("");
     };
 
     const createClose = () => {
         setCreateOpen(false);
+        setError("");
     };
 
     const handleCreateDeal = async () => {
+        if (!comment) {
+            setError("Комментарий является обязательным полем.");
+            return;
+        }
+
         const dealData = {
             source: selectedSource,
             storage: selectedStorage,
             manager: selectedManager,
             comment,
         };
-        await store.createDeal(dealData)
+
+        setLoading(true);
+        try {
+            await store.createDeal(dealData);
+            createClose();
+        } catch (error) {
+            setError("Произошла ошибка при создании сделки.");
+        } finally {
+            setLoading(false);
+        }
     };
 
     if (!isCreateOpen) {
@@ -68,14 +84,15 @@ const CreateWindow = ({ store }) => {
                 >
                     <option value="">Выберите источник</option>
                     {Object.entries(sources).map(([key, value]) => {
-                    if (value.isSystem) {
-                        return null
-                    }
-                    return (
-                        <option key={key} value={value.id}>
-                            {value.name}
-                        </option>
-                    )})}
+                        if (value.isSystem) {
+                            return null;
+                        }
+                        return (
+                            <option key={key} value={value.id}>
+                                {value.name}
+                            </option>
+                        );
+                    })}
                 </select>
 
                 <select
@@ -111,6 +128,7 @@ const CreateWindow = ({ store }) => {
                     value={comment}
                     onChange={(e) => setComment(e.target.value)}
                 />
+                {error && <div className={styles.error}>{error}</div>}
 
                 <div className={styles.buttonContainer}>
                     <div className={styles.button} onClick={handleCreateDeal}>

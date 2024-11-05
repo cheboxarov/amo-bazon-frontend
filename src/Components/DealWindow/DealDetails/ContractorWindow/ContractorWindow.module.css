@@ -1,0 +1,66 @@
+.dealDetailsContainer {
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.headerContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dealTitle {
+    font-size: 20px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.rightButtons {
+    display: flex;
+    gap: 10px;
+}
+
+.printButton, .editButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    color: #007bff;
+    transition: color 0.3s;
+}
+
+.printButton:hover, .editButton:hover {
+    color: #0056b3;
+}
+
+.dealItem {
+    font-size: 15px;
+    color: #555;
+    margin: 8px 0;
+}
+
+.dealLink {
+    display: inline-block;
+    margin-top: 15px;
+    font-size: 14px;
+    color: #007bff;
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.dealLink:hover {
+    text-decoration: underline;
+    color: #0056b3;
+}
