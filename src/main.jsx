@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import { getPipelineLeads } from "./Utils/PipelineUtils";
 import PipelineMarker from "./Components/PipelineMarker/PipelineMarker";
-import { getBazonDeals } from "./HttpService/HttpClient";
+import { getBazonDeals } from "./api/dealsApi";
 import {BASE_URL} from "./settings";
 import store from "./state";
 import DealWindow from "./Components/DealWindow/DealWindow";
@@ -14,9 +14,9 @@ const ErrorPopup = ({ message, isOpen, onClose }) => {
 		if (isOpen) {
 		const timer = setTimeout(() => {
 			onClose();
-		}, 5000); // Автоматическое закрытие через 3 секунды
+		}, 5000);
 
-		return () => clearTimeout(timer); // Очищаем таймер при размонтировании
+		return () => clearTimeout(timer);
 		}
 	}, [isOpen, onClose]);
 
@@ -35,22 +35,25 @@ const Widget = {
 
 		if (window.AMOCRM.data.current_entity === "leads") {
 			store.updateCurrentDeal().then();
-			let productsField = document.querySelector(`[data-id="1263491"]`); // tech
-			//let productsField = document.querySelector(`[data-id="1264434"]`); // kontrabaz
-			if (!productsField)
-				return;
-			const mainElement = document.createElement('div');
-			productsField.replaceWith(mainElement);
-			mainElement.setAttribute('class', 'tema_bazon_widget');
-			store.setRenderDeal(() => {
-				ReactDOM.createRoot(mainElement).render(
-					<React.StrictMode>
-						<ErrorPopup message={store.state.error} isOpen={store.state.error != null} onClose={() => {store.state.error = null; store.renderDeal()}} />
-						<DealWindow store={store} />
-					</React.StrictMode>
-				);
+			fetch(`${BASE_URL}/field`).then((response) => {
+				response.json().then((data) => {
+					let productsField = document.querySelector(`[data-id="${data.field_id}"]`); // tech
+					if (!productsField)
+						return;
+					const mainElement = document.createElement('div');
+					productsField.replaceWith(mainElement);
+					mainElement.setAttribute('class', 'tema_bazon_widget');
+					store.setRenderDeal(() => {
+						ReactDOM.createRoot(mainElement).render(
+							<React.StrictMode>
+								<ErrorPopup message={store.state.error} isOpen={store.state.error != null} onClose={() => {store.state.error = null; store.renderDeal()}} />
+								<DealWindow store={store} />
+							</React.StrictMode>
+						);
+					})
+					store.renderDeal()
+				})
 			})
-			store.renderDeal()
 		} else if (window.AMOCRM.data.current_entity === "leads-pipeline") {
 
 			const renderLeadsPipeline = () => {

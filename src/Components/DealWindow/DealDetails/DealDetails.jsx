@@ -7,6 +7,8 @@ import EditableItem from "./EditableItem/EditableItem";
 import ContractorWindow from './ContractorWindow/ContractorWindow';
 import CreateWindow from '../CreateWindow/CreateWindow';
 import CreateContractorWindow from './CreateContractorWindow/CreateContractorWindow'
+import CreateReceiptWindow from './CreateReceiptWindow/CreateReceiptWindow';
+import ReceiptsWindow from './ReceiptsWindow/ReceiptsWindow';
 
 const DealDetails = ({ store }) => {
     const [isEditOpen, setEditOpen] = useState(false);
@@ -113,9 +115,13 @@ const DealDetails = ({ store }) => {
                 <p className={styles.dealItem}><strong>Количество товаров:</strong> {deal.itemsCount}</p>
                 <p className={styles.dealItem}><strong>Архив:</strong> {deal.isArchive ? "Да" : "Нет"}</p>
                 <p className={styles.dealItem}><strong>Комментарий к доставке:</strong> {deal.deliveryComment || "Нет комментариев"}</p>
+                <a className={styles.dealLink} href={`https://kontrabaz.baz-on.ru/client/1/sales/${deal.number}/`} target="_blank" rel="noopener noreferrer">Сделка в Bazon</a>
+                <br />
                 <a className={styles.dealLink} href={deal.siteHref} target="_blank" rel="noopener noreferrer">Ссылка на сделку</a>
                 <MoveButtons store={store} />
+                <CreateReceiptWindow store={store} />
                 {store.state.currentDeal.dealDetails.state === "reserve" && (<PayContainer store={store} />)}
+                <ReceiptsWindow store={store} />
             </div>
             <ContractorWindow onEditHandle={changeEdit} store={store} />
         </div>

@@ -1,3 +1,4 @@
+import { getReceipts } from "./api/receiptsApi";
 import {BASE_URL} from "./settings";
 
 const store = {
@@ -27,6 +28,9 @@ const store = {
             managers: {},
             contractor: null,
             contractors: [],
+            amoSource: null,
+            cashMachines: [],
+            receipts: [],
         },
         error: null
     },
@@ -34,6 +38,21 @@ const store = {
     setError(error) {
         this.state.error = error
         this.renderDeal()
+    },
+
+    async updateReceipts() {
+        const leadId = this.state.currentDeal.dealId
+        const response = await getReceipts(leadId)
+        this.state.currentDeal.receipts = response.response.getReceipts.ReceiptsList.entitys
+    },
+
+    async getCashMachines() {
+        const dealId = this.state.currentDeal.dealId;
+        const response = await fetch(`${BASE_URL}/bazon-sale/${dealId}/cash-machines`)
+        if (response.ok) {
+            const cashMachines = (await response.json()).response.getCashMachines.CashMachinesList.entitys
+            this.state.currentDeal.cashMachines = cashMachines
+        }
     },
 
     async itemsEditCost(items) {
@@ -88,9 +107,7 @@ const store = {
     },
 
     async getContractor() {
-        console.log("Кидаю запрос на получение контрагента")
         const response = await fetch(`${BASE_URL}/bazon-sale/${this.state.currentDeal.dealId}/contractor`)
-        console.log(`Получен ответ ${response.status}`)
         if (response.status != 200) {
             return
         }
@@ -191,7 +208,6 @@ const store = {
                 await this.updateCurrentDeal()
             } else {
                 this.setError("С сделкой уже кто-то работает!")
-                console.error(response.errored)
             }
         } catch (error) {
             console.log(error)
@@ -283,7 +299,7 @@ const store = {
     },
 
     setOrdersLoading(state) {
-        this.state.currentDeal.orders.isLoading = state;
+        this.state.currentDeal.orders.isOrdersLoading = state;
         this.renderDeal()
     },
 
@@ -315,7 +331,7 @@ const store = {
                 errored = true
             }
             if (response.ok && onProgress) {
-                onProgress(((i + 1) / itemsToUpdate.length) * 100); // обновляем прогресс через callback
+                onProgress(((i + 1) / itemsToUpdate.length) * 100);
             }
         }
         this.closeProductsWindow();
@@ -404,18 +420,19 @@ const store = {
         this.state.currentDeal.dealDetails = null
         this.state.currentDeal.dealProducts = []
         try {
-            this.state.currentDeal.dealId = window.AMOCRM.data.current_card.id; // Получаем ID сделки
+            this.state.currentDeal.dealId = window.AMOCRM.data.current_card.id;
             const response = await fetch(`${BASE_URL}/bazon-sale/${this.state.currentDeal.dealId}/detail`);
             if (response.ok) {
                 const data = await response.json();
-                console.log(data)
                 this.state.currentDeal.dealDetails = data.document.Document;
                 this.setDealProducts(data.items);
                 const tasks = [
                     this.fetchOrders(),
                     this.fetchPaySources(),
                     this.getContractor(),
-                    this.getContractors()
+                    this.getContractors(),
+                    this.getCashMachines(),
+                    this.updateReceipts()
                 ]
                 await this.fetchSubInfo()
                 if (this.state.currentDeal.dealDetails.paid !== 0)
@@ -446,7 +463,20 @@ const store = {
             return await response.json()
         }
         return null
+    },
+
+
+    getAmoSource() {
+        const sourceField = document.querySelector(`[title="Источник"]`).parentElement;
+        if (!sourceField) {
+            return;
+        }
+        const span = sourceField.querySelector(".control--select--button-inner")
+        if (span) {
+            this.state.currentDeal.amoSource = span.innerHTML.replace(/\s/g, "");;
+        }
     }
+    
 
 };
 

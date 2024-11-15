@@ -20,8 +20,9 @@ const CreateWindow = ({ store }) => {
     }, [store]);
 
     const createOpen = () => {
-        setCreateOpen(true);
         setError("");
+        store.getAmoSource()
+        setCreateOpen(true);
     };
 
     const createClose = () => {
@@ -72,6 +73,14 @@ const CreateWindow = ({ store }) => {
                 </div>
             );
         }
+        if (store.state.currentDeal.amoSource && !selectedSource) {
+            Object.entries(sources).map(([key, value]) => {
+                console.log(store.state.currentDeal.amoSource.toLowerCase())
+                if (value.name.toLowerCase() == store.state.currentDeal.amoSource.toLowerCase()) {
+                    setSelectedSource(value.id)
+                }
+            })
+        }
 
         return (
             <div className={styles.createContainer}>
@@ -94,6 +103,8 @@ const CreateWindow = ({ store }) => {
                         );
                     })}
                 </select>
+
+                {store.state.currentDeal.amoSource && (<div style={{marginBottom: "15px"}}>Источник указанный в сделке: <span style={{color:"green"}}>{store.state.currentDeal.amoSource}</span></div>)}
 
                 <select
                     className={styles.selectField}
